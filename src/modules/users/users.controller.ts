@@ -4,12 +4,13 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
-  UsePipes,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserFilterDto } from './dto/user-filter.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -17,28 +18,28 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @UsePipes()
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }
 
   @Get(':id')
-  getUser(@Param('id') id: string) {
+  getUser(@Param('id', ParseIntPipe) id: string) {
     return this.usersService.getUser(id);
   }
 
   @Get()
-  getUsers(@Query('name') name: string) {
-    return this.usersService.getUsers(name);
+  getUsers(@Query() userFilterDto: UserFilterDto) {
+    console.log(userFilterDto);
+    return this.usersService.getUsers(userFilterDto);
   }
 
   @Put(':id')
-  updateUser(@Param('id') id: string) {
+  updateUser(@Param('id', ParseIntPipe) id: string) {
     return this.usersService.updateUser(id);
   }
 
   @Delete(':id')
-  deleteUser(@Param('id') id: string) {
+  deleteUser(@Param('id', ParseIntPipe) id: string) {
     return this.usersService.deleteUser(id);
   }
 }

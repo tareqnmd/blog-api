@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UserFilterDto {
   @IsOptional()
@@ -8,4 +8,12 @@ export class UserFilterDto {
   @IsOptional()
   @IsString()
   email?: string;
+
+  @IsOptional()
+  //   @IsNumber()
+  limit?: number;
+
+  @IsOptional()
+  @IsNumber()
+  page?: number;
 }

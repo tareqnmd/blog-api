@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserFilterDto } from './dto/user-filter.dto';
 
 @Injectable()
 export class UsersService {
@@ -11,8 +12,8 @@ export class UsersService {
     return `User ${id}`;
   }
 
-  getUsers(name: string) {
-    return `Users ${name}`;
+  getUsers(userFilterDto: UserFilterDto) {
+    return `Users ${userFilterDto.name} ${userFilterDto.email} ${userFilterDto.limit} ${userFilterDto.page}`;
   }
 
   updateUser(id: string) {
