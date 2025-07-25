@@ -29,7 +29,6 @@ export class UsersController {
 
   @Get()
   getUsers(@Query() userFilterDto: UserFilterDto) {
-    console.log(userFilterDto);
     return this.usersService.getUsers(userFilterDto);
   }
 
