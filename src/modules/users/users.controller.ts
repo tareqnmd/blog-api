@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -7,31 +8,35 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
   @Post()
-  createUser() {
-    return 'User created';
+  createUser(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.createUser(createUserDto);
   }
 
   @Get(':id')
   getUser(@Param('id') id: string) {
-    return `User ${id}`;
+    return this.usersService.getUser(id);
   }
 
   @Get()
   getUsers(@Query('name') name: string) {
-    return `Users ${name}`;
+    return this.usersService.getUsers(name);
   }
 
   @Put(':id')
   updateUser(@Param('id') id: string) {
-    return `User ${id} updated`;
+    return this.usersService.updateUser(id);
   }
 
   @Delete(':id')
   deleteUser(@Param('id') id: string) {
-    return `User ${id} deleted`;
+    return this.usersService.deleteUser(id);
   }
 }
