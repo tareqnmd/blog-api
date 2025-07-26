@@ -1,3 +1,4 @@
+import { Transform, TransformFnParams } from 'class-transformer';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UserFilterDto {
@@ -10,7 +11,10 @@ export class UserFilterDto {
   email?: string;
 
   @IsOptional()
-  //   @IsNumber()
+  @IsNumber()
+  @Transform(({ value }: TransformFnParams) => {
+    return parseInt(value, 10);
+  })
   limit?: number;
 
   @IsOptional()

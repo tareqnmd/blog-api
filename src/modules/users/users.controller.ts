@@ -22,14 +22,14 @@ export class UsersController {
     return this.usersService.createUser(createUserDto);
   }
 
-  @Get(':id')
-  getUser(@Param('id', ParseIntPipe) id: string) {
-    return this.usersService.getUser(id);
-  }
-
   @Get()
   getUsers(@Query() userFilterDto: UserFilterDto) {
     return this.usersService.getUsers(userFilterDto);
+  }
+
+  @Get(':id')
+  getUser(@Param('id', ParseIntPipe) id: string) {
+    return this.usersService.getUser(id);
   }
 
   @Put(':id')
