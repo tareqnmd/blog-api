@@ -1,4 +1,4 @@
-import { Transform, TransformFnParams } from 'class-transformer';
+import { Type } from 'class-transformer';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UserFilterDto {
@@ -12,12 +12,11 @@ export class UserFilterDto {
 
   @IsOptional()
   @IsNumber()
-  @Transform(({ value }: TransformFnParams) => {
-    return parseInt(value, 10);
-  })
+  @Type(() => Number)
   limit?: number;
 
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   page?: number;
 }
