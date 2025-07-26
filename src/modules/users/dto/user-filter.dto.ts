@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
 
 export class UserFilterDto {
   @IsOptional()
@@ -13,10 +13,12 @@ export class UserFilterDto {
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
+  @IsPositive()
   limit?: number;
 
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
+  @IsPositive()
   page?: number;
 }
