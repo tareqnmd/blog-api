@@ -3,6 +3,7 @@ import {
   IsArray,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MinLength,
 } from 'class-validator';
@@ -35,4 +36,9 @@ export class CreateBlogDto {
   @MinLength(3)
   @IsEnum(BlogStatus)
   status: BlogStatus;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  featuredImage?: string;
 }
