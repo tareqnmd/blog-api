@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+} from 'class-validator';
 
 export class UserFilterDto {
   @ApiProperty({ required: false })
@@ -11,6 +17,7 @@ export class UserFilterDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
+  @IsEmail()
   email?: string;
 
   @ApiProperty({ required: false })
