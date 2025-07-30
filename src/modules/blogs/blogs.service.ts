@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BlogFilterDto } from './dto/blog-filter.dto';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { PatchBlogDto } from './dto/patch-blog.dto';
+import { PutBlogDto } from './dto/put-blog.dto';
 
 @Injectable()
 export class BlogsService {
@@ -17,8 +18,8 @@ export class BlogsService {
     return `Blog ${id} fetched`;
   }
 
-  updateBlog(id: string, blogFilterDto: BlogFilterDto) {
-    return `Blog ${id} updated by ${blogFilterDto.status}`;
+  updateBlog(id: string, putBlogDto: PutBlogDto) {
+    return `Blog ${id} updated by ${putBlogDto.status}`;
   }
 
   updateBlogStatus(id: string, patchBlogDto: PatchBlogDto) {

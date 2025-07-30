@@ -14,6 +14,7 @@ import { BlogsService } from './blogs.service';
 import { BlogFilterDto } from './dto/blog-filter.dto';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { PatchBlogDto } from './dto/patch-blog.dto';
+import { PutBlogDto } from './dto/put-blog.dto';
 
 @Controller('blogs')
 export class BlogsController {
@@ -63,8 +64,8 @@ export class BlogsController {
     },
   })
   @Put(':id')
-  updateBlog(@Param('id') id: string, @Body() blogFilterDto: BlogFilterDto) {
-    return this.blogsService.updateBlog(id, blogFilterDto);
+  updateBlog(@Param('id') id: string, @Body() putBlogDto: PutBlogDto) {
+    return this.blogsService.updateBlog(id, putBlogDto);
   }
 
   @ApiOperation({ summary: 'Update blog status' })
