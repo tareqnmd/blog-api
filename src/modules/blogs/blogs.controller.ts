@@ -9,7 +9,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { BlogsService } from './blogs.service';
 import { BlogFilterDto } from './dto/blog-filter.dto';
 import { CreateBlogDto } from './dto/create-blog.dto';
@@ -20,30 +20,60 @@ export class BlogsController {
   constructor(private readonly blogsService: BlogsService) {}
 
   @ApiOperation({ summary: 'Create blog' })
+  @ApiResponse({
+    status: 200,
+    content: {
+      'application/json': {},
+    },
+  })
   @Post()
   createBlog(@Body() createBlogDto: CreateBlogDto) {
     return this.blogsService.createBlog(createBlogDto);
   }
 
   @ApiOperation({ summary: 'Get blog' })
+  @ApiResponse({
+    status: 200,
+    content: {
+      'application/json': {},
+    },
+  })
   @Get(':id')
   getBlogById(@Param('id') id: string) {
     return this.blogsService.getBlogById(id);
   }
 
   @ApiOperation({ summary: 'Get all blogs' })
+  @ApiResponse({
+    status: 200,
+    content: {
+      'application/json': {},
+    },
+  })
   @Get()
   getBlogs(@Query() blogFilterDto: BlogFilterDto) {
     return this.blogsService.getBlogs(blogFilterDto);
   }
 
   @ApiOperation({ summary: 'Update blog' })
+  @ApiResponse({
+    status: 200,
+    content: {
+      'application/json': {},
+    },
+  })
   @Put(':id')
   updateBlog(@Param('id') id: string, @Body() blogFilterDto: BlogFilterDto) {
     return this.blogsService.updateBlog(id, blogFilterDto);
   }
 
   @ApiOperation({ summary: 'Update blog status' })
+  @ApiResponse({
+    status: 200,
+    content: {
+      'application/json': {},
+    },
+  })
   @Patch(':id')
   updateBlogStatus(
     @Param('id') id: string,
@@ -53,6 +83,12 @@ export class BlogsController {
   }
 
   @ApiOperation({ summary: 'Delete blog' })
+  @ApiResponse({
+    status: 200,
+    content: {
+      'application/json': {},
+    },
+  })
   @Delete(':id')
   deleteBlog(@Param('id') id: string) {
     return this.blogsService.deleteBlog(id);
