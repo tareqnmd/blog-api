@@ -16,10 +16,18 @@ import { CreateBlogDto } from './dto/create-blog.dto';
 import { PatchBlogDto } from './dto/patch-blog.dto';
 import { PutBlogDto } from './dto/put-blog.dto';
 
+/**
+ * BlogsController is a controller that provides methods to create, get, update, and delete blogs.
+ */
 @Controller('blogs')
 export class BlogsController {
   constructor(private readonly blogsService: BlogsService) {}
 
+  /**
+   * Creates a new blog.
+   * @param createBlogDto - The blog to create.
+   * @returns A string with the blog's title.
+   */
   @ApiOperation({ summary: 'Create blog' })
   @ApiResponse({
     status: 200,
@@ -32,6 +40,11 @@ export class BlogsController {
     return this.blogsService.createBlog(createBlogDto);
   }
 
+  /**
+   * Gets a blog by id.
+   * @param id - The id of the blog to get.
+   * @returns A string with the blog's id.
+   */
   @ApiOperation({ summary: 'Get blog' })
   @ApiResponse({
     status: 200,
@@ -44,6 +57,11 @@ export class BlogsController {
     return this.blogsService.getBlogById(id);
   }
 
+  /**
+   * Gets all blogs.
+   * @param blogFilterDto - The filter to get blogs.
+   * @returns A string with the blog's status.
+   */
   @ApiOperation({ summary: 'Get all blogs' })
   @ApiResponse({
     status: 200,
@@ -56,6 +74,12 @@ export class BlogsController {
     return this.blogsService.getBlogs(blogFilterDto);
   }
 
+  /**
+   * Updates a blog.
+   * @param id - The id of the blog to update.
+   * @param putBlogDto - The blog to update.
+   * @returns A string with the blog's status.
+   */
   @ApiOperation({ summary: 'Update blog' })
   @ApiResponse({
     status: 200,
@@ -68,6 +92,12 @@ export class BlogsController {
     return this.blogsService.updateBlog(id, putBlogDto);
   }
 
+  /**
+   * Updates a blog status.
+   * @param id - The id of the blog to update.
+   * @param patchBlogDto - The blog to update.
+   * @returns A string with the blog's status.
+   */
   @ApiOperation({ summary: 'Update blog status' })
   @ApiResponse({
     status: 200,
@@ -83,6 +113,11 @@ export class BlogsController {
     return this.blogsService.updateBlogStatus(id, patchBlogDto);
   }
 
+  /**
+   * Deletes a blog.
+   * @param id - The id of the blog to delete.
+   * @returns A string with the blog's id.
+   */
   @ApiOperation({ summary: 'Delete blog' })
   @ApiResponse({
     status: 200,
