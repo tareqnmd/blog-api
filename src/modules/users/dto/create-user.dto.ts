@@ -10,7 +10,13 @@ import {
 } from 'class-validator';
 import { UserRoles } from '../enum/user-role.enum';
 
+/**
+ * CreateUserDto is a DTO for creating a user.
+ */
 export class CreateUserDto {
+  /**
+   * The first name of the user.
+   */
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -18,6 +24,9 @@ export class CreateUserDto {
   @MaxLength(20)
   firstName: string;
 
+  /**
+   * The last name of the user.
+   */
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -25,11 +34,17 @@ export class CreateUserDto {
   @MaxLength(20)
   lastName: string;
 
+  /**
+   * The email of the user.
+   */
   @ApiProperty()
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
+  /**
+   * The password of the user.
+   */
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -44,6 +59,9 @@ export class CreateUserDto {
   )
   password: string;
 
+  /**
+   * The roles of the user.
+   */
   @ApiProperty({
     enum: UserRoles,
   })

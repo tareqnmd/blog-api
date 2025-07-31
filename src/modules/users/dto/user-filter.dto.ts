@@ -8,18 +8,30 @@ import {
   IsString,
 } from 'class-validator';
 
+/**
+ * UserFilterDto is a DTO for filtering users.
+ */
 export class UserFilterDto {
+  /**
+   * The name of the user.
+   */
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
   name?: string;
 
+  /**
+   * The email of the user.
+   */
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
   @IsEmail()
   email?: string;
 
+  /**
+   * The limit of the users.
+   */
   @ApiProperty({ required: false })
   @IsOptional()
   @IsNumber()
@@ -27,6 +39,9 @@ export class UserFilterDto {
   @IsPositive()
   limit?: number;
 
+  /**
+   * The page of the users.
+   */
   @ApiProperty({ required: false })
   @IsOptional()
   @IsNumber()
