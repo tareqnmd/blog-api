@@ -9,7 +9,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // global pipe
+  // global pipe for validation
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -18,7 +18,7 @@ async function bootstrap() {
     }),
   );
 
-  // swagger
+  // swagger config
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Blog API')
     .setDescription('API description')
