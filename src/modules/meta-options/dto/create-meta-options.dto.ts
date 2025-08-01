@@ -5,5 +5,5 @@ export class CreateMetaOptionsDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsJSON()
-  name: JSON;
+  value: JSON;
 }

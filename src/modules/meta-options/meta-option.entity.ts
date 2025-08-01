@@ -7,5 +7,5 @@ export class MetaOption extends DefaultEntity {
     type: 'json',
     nullable: false,
   })
-  value: string;
+  value: JSON;
 }

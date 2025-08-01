@@ -1,6 +1,7 @@
 import { DefaultEntity } from 'src/common/entities/base.entity';
 import { Column, Entity, JoinColumn, OneToOne, Unique } from 'typeorm';
 import { MetaOption } from '../meta-options/meta-option.entity';
+import { User } from '../users/user.entity';
 import { BlogStatus } from './enum/blog-status.enum';
 
 @Entity()
@@ -29,23 +30,13 @@ export class Blog extends DefaultEntity {
   @Column({
     type: 'varchar',
     length: 255,
-    nullable: true,
-  })
-  publishedAt: Date;
-
-  @Column({
-    type: 'varchar',
-    length: 255,
     nullable: false,
   })
   slug: string;
 
-  @Column({
-    type: 'varchar',
-    length: 255,
-    nullable: true,
-  })
-  featuredImage: string;
+  @OneToOne(() => User)
+  @JoinColumn()
+  author: User;
 
   @Column({
     type: 'simple-array',
@@ -53,9 +44,23 @@ export class Blog extends DefaultEntity {
   })
   tags: string[];
 
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
+  featuredImage?: string;
+
   @OneToOne(() => MetaOption)
   @JoinColumn({
     name: 'metaOptionId',
   })
   metaOptions?: MetaOption;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
+  publishedAt: Date;
 }
