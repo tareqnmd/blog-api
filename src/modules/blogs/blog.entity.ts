@@ -62,5 +62,5 @@ export class Blog extends DefaultEntity {
     length: 255,
     nullable: true,
   })
-  publishedAt: Date;
+  publishedAt?: Date;
 }

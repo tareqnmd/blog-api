@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsDate,
   IsEnum,
   IsNotEmpty,
   IsOptional,
@@ -8,7 +10,9 @@ import {
   IsUrl,
   MaxLength,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
+import { CreateMetaOptionsDto } from 'src/modules/meta-options/dto/create-meta-options.dto';
 import { BlogStatus } from '../enum/blog-status.enum';
 
 /**
@@ -63,4 +67,21 @@ export class CreateBlogDto {
   @IsUrl()
   @MaxLength(255)
   featuredImage?: string;
+
+  /**
+   * The published at of the blog.
+   */
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsDate()
+  publishedAt?: Date;
+
+  /**
+   * The meta options of the blog.
+   */
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateMetaOptionsDto)
+  metaOptions?: CreateMetaOptionsDto;
 }
