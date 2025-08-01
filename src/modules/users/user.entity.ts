@@ -25,7 +25,6 @@ export class User {
     type: 'varchar',
     length: 96,
     nullable: false,
-    unique: true,
   })
   email: string;
 
