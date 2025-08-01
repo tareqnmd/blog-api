@@ -40,5 +40,5 @@ export class User {
     enum: UserRoles,
     nullable: false,
   })
-  roles: UserRoles;
+  role: UserRoles;
 }
