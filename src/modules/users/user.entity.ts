@@ -1,12 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { defaultEntity } from 'src/common/entities/base.entity';
+import { Column, Entity, Unique } from 'typeorm';
 import { UserRoles } from './enum/user-role.enum';
 
 @Entity()
 @Unique(['email'])
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends defaultEntity {
   @Column({
     type: 'varchar',
     length: 96,
@@ -41,19 +39,4 @@ export class User {
     nullable: false,
   })
   role: UserRoles;
-
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    nullable: false,
-  })
-  createdAt: Date;
-
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-    nullable: false,
-  })
-  updatedAt: Date;
 }
