@@ -1,4 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Blog } from './blog.entity';
 import { BlogFilterDto } from './dto/blog-filter.dto';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { PatchBlogDto } from './dto/patch-blog.dto';
@@ -10,12 +13,21 @@ import { PutBlogDto } from './dto/put-blog.dto';
 @Injectable()
 export class BlogsService {
   /**
+   * Creates a new instance of BlogsService.
+   * @param blogRepository - The repository for the Blog entity.
+   */
+  constructor(
+    @InjectRepository(Blog)
+    private readonly blogRepository: Repository<Blog>,
+  ) {}
+  /**
    * Creates a new blog.
    * @param createBlogDto - The blog to create.
    * @returns A string with the blog's title.
    */
   createBlog(createBlogDto: CreateBlogDto) {
-    return `Blog ${createBlogDto.title} created`;
+    const blog = this.blogRepository.create(createBlogDto);
+    return this.blogRepository.save(blog);
   }
 
   /**

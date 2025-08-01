@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  MaxLength,
   MinLength,
 } from 'class-validator';
 import { BlogStatus } from '../enum/blog-status.enum';
@@ -20,6 +21,7 @@ export class CreateBlogDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
+  @MaxLength(255)
   title: string;
 
   /**
@@ -48,7 +50,6 @@ export class CreateBlogDto {
   })
   @IsNotEmpty()
   @IsString()
-  @MinLength(3)
   @IsEnum(BlogStatus)
   status: BlogStatus;
 
