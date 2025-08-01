@@ -21,7 +21,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  @MaxLength(20)
+  @MaxLength(96)
   firstName: string;
 
   /**
@@ -31,7 +31,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  @MaxLength(20)
+  @MaxLength(96)
   lastName: string;
 
   /**
@@ -40,6 +40,7 @@ export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsEmail()
+  @MaxLength(96)
   email: string;
 
   /**

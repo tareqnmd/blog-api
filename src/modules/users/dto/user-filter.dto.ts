@@ -6,6 +6,8 @@ import {
   IsOptional,
   IsPositive,
   IsString,
+  MaxLength,
+  MinLength,
 } from 'class-validator';
 
 /**
@@ -17,6 +19,8 @@ export class UserFilterDto {
    */
   @ApiProperty({ required: false })
   @IsOptional()
+  @MinLength(3)
+  @MaxLength(96)
   @IsString()
   name?: string;
 
@@ -26,6 +30,7 @@ export class UserFilterDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
+  @MaxLength(96)
   @IsEmail()
   email?: string;
 
