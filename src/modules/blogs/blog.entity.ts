@@ -1,5 +1,6 @@
 import { DefaultEntity } from 'src/common/entities/base.entity';
-import { Column, Entity, Unique } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, Unique } from 'typeorm';
+import { MetaOption } from '../meta-options/meta-option.entity';
 import { BlogStatus } from './enum/blog-status.enum';
 
 @Entity()
@@ -51,4 +52,10 @@ export class Blog extends DefaultEntity {
     nullable: false,
   })
   tags: string[];
+
+  @OneToOne(() => MetaOption)
+  @JoinColumn({
+    name: 'metaOptionId',
+  })
+  metaOptions?: MetaOption;
 }
