@@ -1,10 +1,10 @@
-import { defaultEntity } from 'src/common/entities/base.entity';
+import { DefaultEntity } from 'src/common/entities/base.entity';
 import { Column, Entity, Unique } from 'typeorm';
 import { UserRoles } from './enum/user-role.enum';
 
 @Entity()
 @Unique(['email'])
-export class User extends defaultEntity {
+export class User extends DefaultEntity {
   @Column({
     type: 'varchar',
     length: 96,

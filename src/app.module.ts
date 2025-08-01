@@ -4,6 +4,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { BlogsModule } from './modules/blogs/blogs.module';
 import { User } from './modules/users/user.entity';
 import { UsersModule } from './modules/users/users.module';
+import { TagsModule } from './modules/tags/tags.module';
+import { MetaOptionsModule } from './modules/meta-options/meta-options.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { UsersModule } from './modules/users/users.module';
         database: 'blogs',
       }),
     }),
+    TagsModule,
+    MetaOptionsModule,
   ],
 })
 export class AppModule {}

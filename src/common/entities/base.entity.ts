@@ -1,10 +1,11 @@
 import {
   CreateDateColumn,
+  DeleteDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-export abstract class defaultEntity {
+export abstract class DefaultEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -22,4 +23,10 @@ export abstract class defaultEntity {
     nullable: false,
   })
   updatedAt: Date;
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    nullable: true,
+  })
+  deletedAt: Date;
 }

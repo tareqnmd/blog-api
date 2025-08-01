@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUrl,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -59,5 +60,7 @@ export class CreateBlogDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
+  @IsUrl()
+  @MaxLength(255)
   featuredImage?: string;
 }

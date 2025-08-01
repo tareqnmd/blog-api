@@ -1,10 +1,10 @@
-import { defaultEntity } from 'src/common/entities/base.entity';
+import { DefaultEntity } from 'src/common/entities/base.entity';
 import { Column, Entity, Unique } from 'typeorm';
 import { BlogStatus } from './enum/blog-status.enum';
 
 @Entity()
 @Unique(['slug'])
-export class Blog extends defaultEntity {
+export class Blog extends DefaultEntity {
   @Column({
     type: 'varchar',
     length: 255,
