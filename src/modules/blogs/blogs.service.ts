@@ -20,6 +20,7 @@ export class BlogsService {
     @InjectRepository(Blog)
     private readonly blogRepository: Repository<Blog>,
   ) {}
+
   /**
    * Creates a new blog.
    * @param createBlogDto - The blog to create.
