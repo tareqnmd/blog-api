@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { generateSlugText } from 'src/common/helper';
 import { Repository } from 'typeorm';
 import { MetaOptionsService } from '../meta-options/meta-options.service';
 import { Blog } from './blog.entity';
@@ -36,7 +37,7 @@ export class BlogsService {
     if (metaOptions) {
       blog.metaOptions = metaOptions;
     }
-    blog.slug = 'kkk';
+    blog.slug = generateSlugText(blog.title);
     return this.blogRepository.save(blog);
   }
 
