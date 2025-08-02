@@ -53,6 +53,17 @@ export class UsersService {
   }
 
   /**
+   * Gets a user by username.
+   * @param email - The email of the user to get.
+   * @returns A string with the user's name and email.
+   */
+  getUserByEmail(email: string) {
+    return this.userRepository.findOne({
+      where: { email },
+    });
+  }
+
+  /**
    * Gets all users.
    * @param userFilterDto - The filter to get users.
    * @returns A string with the user's name and email.
