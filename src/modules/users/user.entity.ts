@@ -1,5 +1,6 @@
 import { DefaultEntity } from 'src/common/entities/base.entity';
-import { Column, Entity, Unique } from 'typeorm';
+import { Column, Entity, OneToMany, Unique } from 'typeorm';
+import { Blog } from '../blogs/blog.entity';
 import { UserRoles } from './enum/user-role.enum';
 
 @Entity()
@@ -39,4 +40,7 @@ export class User extends DefaultEntity {
     nullable: false,
   })
   role: UserRoles;
+
+  @OneToMany(() => Blog, (blog) => blog.author)
+  blogs: Blog[];
 }

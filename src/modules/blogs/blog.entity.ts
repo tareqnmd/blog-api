@@ -1,5 +1,5 @@
 import { DefaultEntity } from 'src/common/entities/base.entity';
-import { Column, Entity, JoinColumn, OneToOne, Unique } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToOne, Unique } from 'typeorm';
 import { MetaOption } from '../meta-options/meta-option.entity';
 import { User } from '../users/user.entity';
 import { BlogStatus } from './enum/blog-status.enum';
@@ -34,8 +34,7 @@ export class Blog extends DefaultEntity {
   })
   slug: string;
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, (user) => user.blogs)
   author: User;
 
   @Column({
