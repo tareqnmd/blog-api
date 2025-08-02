@@ -48,7 +48,7 @@ export class Blog extends DefaultEntity {
   })
   author: User;
 
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, { eager: true })
   @JoinTable()
   tags: Tag[];
 
