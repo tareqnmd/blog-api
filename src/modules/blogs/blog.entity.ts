@@ -1,6 +1,15 @@
 import { DefaultEntity } from 'src/common/entities/base.entity';
-import { Column, Entity, ManyToOne, OneToOne, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToOne,
+  Unique,
+} from 'typeorm';
 import { MetaOption } from '../meta-options/meta-option.entity';
+import { Tag } from '../tags/tag.entity';
 import { User } from '../users/user.entity';
 import { BlogStatus } from './enum/blog-status.enum';
 
@@ -39,11 +48,9 @@ export class Blog extends DefaultEntity {
   })
   author: User;
 
-  @Column({
-    type: 'simple-array',
-    nullable: false,
-  })
-  tags: string[];
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags: Tag[];
 
   @Column({
     type: 'varchar',

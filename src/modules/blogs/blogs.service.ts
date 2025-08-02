@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generateSlugText } from 'src/common/helper';
 import { Repository } from 'typeorm';
+import { TagsService } from '../tags/tags.service';
 import { UsersService } from '../users/users.service';
 import { Blog } from './blog.entity';
 import { BlogFilterDto } from './dto/blog-filter.dto';
@@ -22,6 +23,7 @@ export class BlogsService {
     @InjectRepository(Blog)
     private readonly blogRepository: Repository<Blog>,
     private readonly usersService: UsersService,
+    private readonly tagsService: TagsService,
   ) {}
 
   /**
@@ -31,10 +33,12 @@ export class BlogsService {
    */
   async createBlog(createBlogDto: CreateBlogDto) {
     const author = await this.usersService.getUser(1);
+    const tags = await this.tagsService.getTagsByIds(createBlogDto.tags);
     const newBlog = this.blogRepository.create({
       ...createBlogDto,
       slug: generateSlugText(createBlogDto.title),
       author,
+      tags,
     });
     return this.blogRepository.save(newBlog);
   }
@@ -76,7 +80,11 @@ export class BlogsService {
   async updateBlog(id: number, putBlogDto: PutBlogDto) {
     const blog = await this.getBlogById(id);
     if (blog) {
-      const updatedBlog = await this.blogRepository.update(id, putBlogDto);
+      const tags = await this.tagsService.getTagsByIds(putBlogDto.tags);
+      const updatedBlog = await this.blogRepository.update(id, {
+        ...putBlogDto,
+        tags,
+      });
       return updatedBlog;
     }
   }
@@ -90,7 +98,13 @@ export class BlogsService {
   async updateBlogStatus(id: number, patchBlogDto: PatchBlogDto) {
     const blog = await this.getBlogById(id);
     if (blog) {
-      const updatedBlog = await this.blogRepository.update(id, patchBlogDto);
+      const tags = patchBlogDto.tags
+        ? await this.tagsService.getTagsByIds(patchBlogDto.tags)
+        : blog.tags;
+      const updatedBlog = await this.blogRepository.update(id, {
+        ...patchBlogDto,
+        tags,
+      });
       return updatedBlog;
     }
   }

@@ -5,6 +5,7 @@ import {
   IsDate,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUrl,
@@ -44,8 +45,8 @@ export class CreateBlogDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsArray()
-  @IsString({ each: true })
-  tags: string[];
+  @IsNumber({}, { each: true })
+  tags: number[];
 
   /**
    * The status of the blog.
