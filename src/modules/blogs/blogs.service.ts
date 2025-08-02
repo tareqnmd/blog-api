@@ -30,11 +30,13 @@ export class BlogsService {
    * @returns A string with the blog's title.
    */
   async createBlog(createBlogDto: CreateBlogDto) {
-    const blog = this.blogRepository.create(createBlogDto);
     const author = await this.usersService.getUser(1);
-    blog.slug = generateSlugText(blog.title);
-    blog.author = author;
-    return this.blogRepository.save(blog);
+    const newBlog = this.blogRepository.create({
+      ...createBlogDto,
+      slug: generateSlugText(createBlogDto.title),
+      author,
+    });
+    return this.blogRepository.save(newBlog);
   }
 
   /**
