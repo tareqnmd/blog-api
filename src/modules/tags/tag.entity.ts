@@ -1,5 +1,6 @@
 import { DefaultEntity } from 'src/common/entities/base.entity';
-import { Column, Entity, Unique } from 'typeorm';
+import { Column, Entity, ManyToMany, Unique } from 'typeorm';
+import { Blog } from '../blogs/blog.entity';
 
 @Entity()
 @Unique(['slug', 'name'])
@@ -31,4 +32,7 @@ export class Tag extends DefaultEntity {
     nullable: false,
   })
   featuredImageUrl: string;
+
+  @ManyToMany(() => Blog, (blog) => blog.tags)
+  blogs: Blog[];
 }
