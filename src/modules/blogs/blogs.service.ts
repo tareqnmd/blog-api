@@ -81,7 +81,8 @@ export class BlogsService {
     const blog = await this.getBlogById(id);
     if (blog) {
       const tags = await this.tagsService.getTagsByIds(putBlogDto.tags);
-      const updatedBlog = await this.blogRepository.update(id, {
+      const updatedBlog = await this.blogRepository.save({
+        ...blog,
         ...putBlogDto,
         tags,
       });
@@ -101,7 +102,8 @@ export class BlogsService {
       const tags = patchBlogDto.tags
         ? await this.tagsService.getTagsByIds(patchBlogDto.tags)
         : blog.tags;
-      const updatedBlog = await this.blogRepository.update(id, {
+      const updatedBlog = await this.blogRepository.save({
+        ...blog,
         ...patchBlogDto,
         tags,
       });

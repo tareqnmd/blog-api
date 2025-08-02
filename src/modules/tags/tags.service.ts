@@ -34,7 +34,7 @@ export class TagsService {
     if (!tag) {
       throw new NotFoundException('Tag not found');
     }
-    return this.tagRepository.update(id, updateTagDto);
+    return this.tagRepository.save({ ...tag, ...updateTagDto });
   }
 
   async deleteTag(id: number) {

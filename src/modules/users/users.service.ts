@@ -87,7 +87,7 @@ export class UsersService {
   async updateUser(id: number, patchUserDto: PatchUserDto) {
     const user = await this.getUser(id);
     if (user) {
-      await this.userRepository.update(id, patchUserDto);
+      await this.userRepository.save({ ...user, ...patchUserDto });
       return this.getUser(id);
     }
   }
