@@ -38,8 +38,13 @@ export class BlogsService {
    * @param blogFilterDto - The filter to get blogs.
    * @returns A string with the blog's status.
    */
-  getBlogs(blogFilterDto: BlogFilterDto) {
-    return `Blogs filtered by ${blogFilterDto.status}`;
+  async getBlogs(blogFilterDto: BlogFilterDto) {
+    const query = this.blogRepository.find({
+      where: {
+        status: blogFilterDto.status,
+      },
+    });
+    return query;
   }
 
   /**
@@ -47,8 +52,13 @@ export class BlogsService {
    * @param id - The id of the blog to get.
    * @returns A string with the blog's id.
    */
-  getBlogById(id: string) {
-    return `Blog ${id} fetched`;
+  async getBlogById(id: number) {
+    const blog = await this.blogRepository.findOne({
+      where: {
+        id,
+      },
+    });
+    return blog;
   }
 
   /**
@@ -76,7 +86,13 @@ export class BlogsService {
    * @param id - The id of the blog to delete.
    * @returns A string with the blog's id.
    */
-  deleteBlog(id: string) {
-    return `Blog ${id} deleted`;
+  async deleteBlog(id: number) {
+    const blog = await this.getBlogById(id);
+    if (blog) {
+      await this.blogRepository.delete(blog.id);
+      return {
+        message: 'Blog deleted successfully',
+      };
+    }
   }
 }

@@ -51,11 +51,9 @@ export class Blog extends DefaultEntity {
   })
   featuredImage?: string;
 
-  @OneToOne(() => MetaOption, {
+  @OneToOne(() => MetaOption, (metaOption) => metaOption.blog, {
     cascade: true,
-  })
-  @JoinColumn({
-    name: 'metaOptionId',
+    eager: true,
   })
   metaOptions?: MetaOption;
 

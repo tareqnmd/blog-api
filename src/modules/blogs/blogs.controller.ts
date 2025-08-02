@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Put,
@@ -53,7 +54,7 @@ export class BlogsController {
     },
   })
   @Get(':id')
-  getBlogById(@Param('id') id: string) {
+  getBlogById(@Param('id', ParseIntPipe) id: number) {
     return this.blogsService.getBlogById(id);
   }
 
@@ -126,7 +127,7 @@ export class BlogsController {
     },
   })
   @Delete(':id')
-  deleteBlog(@Param('id') id: string) {
+  deleteBlog(@Param('id', ParseIntPipe) id: number) {
     return this.blogsService.deleteBlog(id);
   }
 }
