@@ -1,7 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
+import { PatchUserDto } from './dto/patch-user.dto';
 import { UserFilterDto } from './dto/user-filter.dto';
 import { UserRoles } from './enum/user-role.enum';
 import { User } from './user.entity';
@@ -48,8 +53,14 @@ export class UsersService {
    * @param id - The id of the user to get.
    * @returns A string with the user's name and email.
    */
-  getUser(id: string) {
-    return `User ${id}`;
+  async getUser(id: number) {
+    const user = await this.userRepository.findOne({
+      where: { id },
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   /**
@@ -57,8 +68,15 @@ export class UsersService {
    * @param userFilterDto - The filter to get users.
    * @returns A string with the user's name and email.
    */
-  getUsers(userFilterDto: UserFilterDto) {
-    return `Users ${userFilterDto.name} ${userFilterDto.email} ${userFilterDto.limit} ${userFilterDto.page}`;
+  async getUsers(userFilterDto: UserFilterDto) {
+    const query = this.userRepository.createQueryBuilder('user');
+    if (userFilterDto.name) {
+      query.andWhere('user.name = :name', { name: userFilterDto.name });
+    }
+    if (userFilterDto.email) {
+      query.andWhere('user.email = :email', { email: userFilterDto.email });
+    }
+    return query.getMany();
   }
 
   /**
@@ -66,8 +84,12 @@ export class UsersService {
    * @param id - The id of the user to update.
    * @returns A string with the user's name and email.
    */
-  updateUser(id: string) {
-    return `User ${id} updated`;
+  async updateUser(id: number, patchUserDto: PatchUserDto) {
+    const user = await this.getUser(id);
+    if (user) {
+      await this.userRepository.update(id, patchUserDto);
+      return this.getUser(id);
+    }
   }
 
   /**
@@ -75,7 +97,13 @@ export class UsersService {
    * @param id - The id of the user to delete.
    * @returns A string with the user's name and email.
    */
-  deleteUser(id: string) {
-    return `User ${id} deleted`;
+  async deleteUser(id: number) {
+    const user = await this.getUser(id);
+    if (user) {
+      await this.userRepository.delete(user.id);
+      return {
+        message: 'User deleted successfully',
+      };
+    }
   }
 }

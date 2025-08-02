@@ -13,6 +13,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserFilterDto } from './dto/user-filter.dto';
 import { UsersService } from './users.service';
+import { PatchUserDto } from './dto/patch-user.dto';
 
 /**
  * UsersController is a controller that provides methods to create, get, update, and delete users.
@@ -70,7 +71,7 @@ export class UsersController {
     },
   })
   @Get(':id')
-  getUser(@Param('id', ParseIntPipe) id: string) {
+  getUser(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.getUser(id);
   }
 
@@ -87,8 +88,11 @@ export class UsersController {
     },
   })
   @Put(':id')
-  updateUser(@Param('id', ParseIntPipe) id: string) {
-    return this.usersService.updateUser(id);
+  updateUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() patchUserDto: PatchUserDto,
+  ) {
+    return this.usersService.updateUser(id, patchUserDto);
   }
 
   /**
@@ -104,7 +108,7 @@ export class UsersController {
     },
   })
   @Delete(':id')
-  deleteUser(@Param('id', ParseIntPipe) id: string) {
+  deleteUser(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.deleteUser(id);
   }
 }
