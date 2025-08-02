@@ -86,13 +86,11 @@ export class UsersService {
    */
   async updateUser(id: number, patchUserDto: PatchUserDto) {
     const user = await this.getUser(id);
-    if (user) {
-      const updatedUser = await this.userRepository.save({
-        ...user,
-        ...patchUserDto,
-      });
-      return updatedUser;
-    }
+    const updatedUser = await this.userRepository.save({
+      ...user,
+      ...patchUserDto,
+    });
+    return updatedUser;
   }
 
   /**
@@ -102,11 +100,9 @@ export class UsersService {
    */
   async deleteUser(id: number) {
     const user = await this.getUser(id);
-    if (user) {
-      await this.userRepository.delete(user.id);
-      return {
-        message: 'User deleted successfully',
-      };
-    }
+    await this.userRepository.delete(user.id);
+    return {
+      message: 'User deleted successfully',
+    };
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generateSlugText } from 'src/common/helper';
 import { Repository } from 'typeorm';
@@ -69,6 +69,9 @@ export class BlogsService {
         id,
       },
     });
+    if (!blog) {
+      throw new NotFoundException('Blog not found');
+    }
     return blog;
   }
 
@@ -80,15 +83,13 @@ export class BlogsService {
    */
   async updateBlog(id: number, putBlogDto: PutBlogDto) {
     const blog = await this.getBlogById(id);
-    if (blog) {
-      const tags = await this.tagsService.getTagsByIds(putBlogDto.tags);
-      const updatedBlog = await this.blogRepository.save({
-        ...blog,
-        ...putBlogDto,
-        tags,
-      });
-      return updatedBlog;
-    }
+    const tags = await this.tagsService.getTagsByIds(putBlogDto.tags);
+    const updatedBlog = await this.blogRepository.save({
+      ...blog,
+      ...putBlogDto,
+      tags,
+    });
+    return updatedBlog;
   }
 
   /**
@@ -99,17 +100,15 @@ export class BlogsService {
    */
   async updateBlogStatus(id: number, patchBlogDto: PatchBlogDto) {
     const blog = await this.getBlogById(id);
-    if (blog) {
-      const tags = patchBlogDto.tags
-        ? await this.tagsService.getTagsByIds(patchBlogDto.tags)
-        : blog.tags;
-      const updatedBlog = await this.blogRepository.save({
-        ...blog,
-        ...patchBlogDto,
-        tags,
-      });
-      return updatedBlog;
-    }
+    const tags = patchBlogDto.tags
+      ? await this.tagsService.getTagsByIds(patchBlogDto.tags)
+      : blog.tags;
+    const updatedBlog = await this.blogRepository.save({
+      ...blog,
+      ...patchBlogDto,
+      tags,
+    });
+    return updatedBlog;
   }
 
   /**
@@ -119,11 +118,9 @@ export class BlogsService {
    */
   async deleteBlog(id: number) {
     const blog = await this.getBlogById(id);
-    if (blog) {
-      await this.blogRepository.delete(blog.id);
-      return {
-        message: 'Blog deleted successfully',
-      };
-    }
+    await this.blogRepository.delete(blog.id);
+    return {
+      message: 'Blog deleted successfully',
+    };
   }
 }

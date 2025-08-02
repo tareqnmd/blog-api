@@ -22,7 +22,11 @@ export class TagsService {
   }
 
   async getTagById(id: number) {
-    return this.tagRepository.findOne({ where: { id } });
+    const tag = await this.tagRepository.findOne({ where: { id } });
+    if (!tag) {
+      throw new NotFoundException('Tag not found');
+    }
+    return tag;
   }
 
   async getTagsByIds(ids: number[]) {
@@ -31,17 +35,11 @@ export class TagsService {
 
   async updateTag(id: number, updateTagDto: UpdateTagDto) {
     const tag = await this.getTagById(id);
-    if (!tag) {
-      throw new NotFoundException('Tag not found');
-    }
     return this.tagRepository.save({ ...tag, ...updateTagDto });
   }
 
   async deleteTag(id: number) {
     const tag = await this.getTagById(id);
-    if (!tag) {
-      throw new NotFoundException('Tag not found');
-    }
     return this.tagRepository.remove(tag);
   }
 }
