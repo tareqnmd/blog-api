@@ -40,7 +40,8 @@ export class BlogsService {
       author,
       tags,
     });
-    return this.blogRepository.save(newBlog);
+    const savedBlog = await this.blogRepository.save(newBlog);
+    return savedBlog;
   }
 
   /**
