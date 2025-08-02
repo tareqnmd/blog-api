@@ -34,7 +34,9 @@ export class Blog extends DefaultEntity {
   })
   slug: string;
 
-  @ManyToOne(() => User, (user) => user.blogs)
+  @ManyToOne(() => User, (user) => user.blogs, {
+    eager: true,
+  })
   author: User;
 
   @Column({
