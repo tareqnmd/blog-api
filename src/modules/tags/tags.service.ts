@@ -40,6 +40,9 @@ export class TagsService {
 
   async deleteTag(id: number) {
     const tag = await this.getTagById(id);
-    return this.tagRepository.remove(tag);
+    await this.tagRepository.delete(tag.id);
+    return {
+      message: 'Tag deleted successfully',
+    };
   }
 }
