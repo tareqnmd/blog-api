@@ -45,4 +45,12 @@ export class TagsService {
       message: 'Tag deleted successfully',
     };
   }
+
+  async softDeleteTag(id: number) {
+    const tag = await this.getTagById(id);
+    await this.tagRepository.softDelete(tag.id);
+    return {
+      message: 'Tag deleted successfully',
+    };
+  }
 }

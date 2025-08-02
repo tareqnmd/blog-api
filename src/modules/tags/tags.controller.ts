@@ -43,4 +43,9 @@ export class TagsController {
   deleteTag(@Param('id', ParseIntPipe) id: number) {
     return this.tagsService.deleteTag(id);
   }
+
+  @Delete(':id/soft')
+  softDeleteTag(@Param('id', ParseIntPipe) id: number) {
+    return this.tagsService.softDeleteTag(id);
+  }
 }
