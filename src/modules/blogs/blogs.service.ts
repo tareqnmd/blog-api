@@ -71,8 +71,12 @@ export class BlogsService {
    * @param putBlogDto - The blog to update.
    * @returns A string with the blog's status.
    */
-  updateBlog(id: string, putBlogDto: PutBlogDto) {
-    return `Blog ${id} updated by ${putBlogDto.status}`;
+  async updateBlog(id: number, putBlogDto: PutBlogDto) {
+    const blog = await this.getBlogById(id);
+    if (blog) {
+      const updatedBlog = await this.blogRepository.update(id, putBlogDto);
+      return updatedBlog;
+    }
   }
 
   /**
@@ -81,8 +85,12 @@ export class BlogsService {
    * @param patchBlogDto - The blog to update.
    * @returns A string with the blog's status.
    */
-  updateBlogStatus(id: string, patchBlogDto: PatchBlogDto) {
-    return `Blog ${id} updated by ${patchBlogDto.status}`;
+  async updateBlogStatus(id: number, patchBlogDto: PatchBlogDto) {
+    const blog = await this.getBlogById(id);
+    if (blog) {
+      const updatedBlog = await this.blogRepository.update(id, patchBlogDto);
+      return updatedBlog;
+    }
   }
 
   /**

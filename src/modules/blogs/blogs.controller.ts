@@ -89,7 +89,10 @@ export class BlogsController {
     },
   })
   @Put(':id')
-  updateBlog(@Param('id') id: string, @Body() putBlogDto: PutBlogDto) {
+  updateBlog(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() putBlogDto: PutBlogDto,
+  ) {
     return this.blogsService.updateBlog(id, putBlogDto);
   }
 
@@ -108,7 +111,7 @@ export class BlogsController {
   })
   @Patch(':id')
   updateBlogStatus(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() patchBlogDto: PatchBlogDto,
   ) {
     return this.blogsService.updateBlogStatus(id, patchBlogDto);
