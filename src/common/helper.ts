@@ -1,8 +1,10 @@
 export const makeSixDigitRandomCodeFromTime = () => {
   const timestamp = Date.now().toString();
-  const randomLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
-  const randomDigits = Math.floor(100 + Math.random() * 900).toString();
-  return randomLetter + randomDigits + timestamp.slice(-3);
+  const randomLetters = Array(3)
+    .fill(0)
+    .map(() => String.fromCharCode(97 + Math.floor(Math.random() * 26)))
+    .join('');
+  return randomLetters + timestamp.slice(-3);
 };
 
 export const generateSlugText = (title: string) => {

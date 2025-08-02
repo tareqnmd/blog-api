@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generateSlugText } from 'src/common/helper';
 import { Repository } from 'typeorm';
-import { MetaOptionsService } from '../meta-options/meta-options.service';
 import { Blog } from './blog.entity';
 import { BlogFilterDto } from './dto/blog-filter.dto';
 import { CreateBlogDto } from './dto/create-blog.dto';
@@ -21,7 +20,6 @@ export class BlogsService {
   constructor(
     @InjectRepository(Blog)
     private readonly blogRepository: Repository<Blog>,
-    private readonly metaOptionsService: MetaOptionsService,
   ) {}
 
   /**
@@ -30,13 +28,7 @@ export class BlogsService {
    * @returns A string with the blog's title.
    */
   async createBlog(createBlogDto: CreateBlogDto) {
-    const metaOptions = createBlogDto.metaOptions
-      ? await this.metaOptionsService.create(createBlogDto.metaOptions)
-      : null;
     const blog = this.blogRepository.create(createBlogDto);
-    if (metaOptions) {
-      blog.metaOptions = metaOptions;
-    }
     blog.slug = generateSlugText(blog.title);
     return this.blogRepository.save(blog);
   }
