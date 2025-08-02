@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generateSlugText } from 'src/common/helper';
 import { Repository } from 'typeorm';
+import { UsersService } from '../users/users.service';
 import { Blog } from './blog.entity';
 import { BlogFilterDto } from './dto/blog-filter.dto';
 import { CreateBlogDto } from './dto/create-blog.dto';
@@ -20,6 +21,7 @@ export class BlogsService {
   constructor(
     @InjectRepository(Blog)
     private readonly blogRepository: Repository<Blog>,
+    private readonly usersService: UsersService,
   ) {}
 
   /**
@@ -29,7 +31,9 @@ export class BlogsService {
    */
   async createBlog(createBlogDto: CreateBlogDto) {
     const blog = this.blogRepository.create(createBlogDto);
+    const author = await this.usersService.getUser(1);
     blog.slug = generateSlugText(blog.title);
+    blog.author = author;
     return this.blogRepository.save(blog);
   }
 
