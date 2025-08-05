@@ -9,9 +9,6 @@ import { BlogsModule } from './modules/blogs/blogs.module';
 import { MetaOptionsModule } from './modules/meta-options/meta-options.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { UsersModule } from './modules/users/users.module';
-const ENV_FILE = !process.env.NODE_ENV
-  ? '.env.development'
-  : `.env.${process.env.NODE_ENV}`;
 
 @Module({
   imports: [
@@ -20,7 +17,7 @@ const ENV_FILE = !process.env.NODE_ENV
     AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ENV_FILE,
+      envFilePath: [`.env.${process.env.NODE_ENV}`, '.env'],
       load: [appConfig, dbConfig],
       validationSchema: envValidation,
     }),
