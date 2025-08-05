@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generateSlugText } from 'src/common/helper';
 import { Repository } from 'typeorm';
@@ -24,6 +25,7 @@ export class BlogsService {
     private readonly blogRepository: Repository<Blog>,
     private readonly usersService: UsersService,
     private readonly tagsService: TagsService,
+    private readonly configService: ConfigService,
   ) {}
 
   /**
@@ -50,6 +52,9 @@ export class BlogsService {
    * @returns A string with the blog's status.
    */
   async getBlogs(blogFilterDto: BlogFilterDto) {
+    const env = this.configService.get<string>('NODE_ENV', 'NODE_ENV_2');
+    console.log(env);
+
     const query = this.blogRepository.find({
       where: {
         status: blogFilterDto.status,
