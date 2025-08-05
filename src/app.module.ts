@@ -12,7 +12,6 @@ import { UsersModule } from './modules/users/users.module';
 const ENV_FILE = !process.env.NODE_ENV
   ? '.env.development'
   : `.env.${process.env.NODE_ENV}`;
-console.log(ENV_FILE);
 
 @Module({
   imports: [

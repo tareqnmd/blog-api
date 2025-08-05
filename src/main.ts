@@ -31,8 +31,8 @@ async function bootstrap() {
       defaultModelsExpandDepth: -1,
     },
   });
-
-  await app.listen(process.env.PORT ?? 3211);
+  const port = process.env.PORT ?? 3000;
+  await app.listen(port);
 }
 
 void bootstrap();
