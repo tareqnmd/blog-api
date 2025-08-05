@@ -7,7 +7,7 @@ import { MetaOptionsModule } from './modules/meta-options/meta-options.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { UsersModule } from './modules/users/users.module';
 const ENV_FILE = !process.env.NODE_ENV
-  ? '.env'
+  ? '.env.development'
   : `.env.${process.env.NODE_ENV}`;
 console.log(ENV_FILE);
 
