@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import appConfig from './config/app.config';
 import dbConfig from './config/db.config';
+import envValidation from './config/env.validation';
 import { AuthModule } from './modules/auth/auth.module';
 import { BlogsModule } from './modules/blogs/blogs.module';
 import { MetaOptionsModule } from './modules/meta-options/meta-options.module';
@@ -22,6 +23,7 @@ console.log(ENV_FILE);
       isGlobal: true,
       envFilePath: ENV_FILE,
       load: [appConfig, dbConfig],
+      validationSchema: envValidation,
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
