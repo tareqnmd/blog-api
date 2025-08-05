@@ -52,9 +52,6 @@ export class BlogsService {
    * @returns A string with the blog's status.
    */
   async getBlogs(blogFilterDto: BlogFilterDto) {
-    const env = this.configService.get<string>('NODE_ENV', 'NODE_ENV_2');
-    console.log(env);
-
     const query = this.blogRepository.find({
       where: {
         status: blogFilterDto.status,

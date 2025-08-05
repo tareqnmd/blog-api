@@ -6,6 +6,9 @@ import { BlogsModule } from './modules/blogs/blogs.module';
 import { MetaOptionsModule } from './modules/meta-options/meta-options.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { UsersModule } from './modules/users/users.module';
+const ENV_FILE = !process.env.NODE_ENV
+  ? '.env'
+  : `.env.${process.env.NODE_ENV}`;
 
 @Module({
   imports: [
@@ -14,6 +17,8 @@ import { UsersModule } from './modules/users/users.module';
     AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
+      // envFilePath: ['.env.development'],
+      envFilePath: ENV_FILE,
     }),
     TypeOrmModule.forRootAsync({
       inject: [],
