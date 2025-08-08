@@ -10,19 +10,21 @@ export class ResponseUtil {
       data: data ?? null,
       message,
       status,
+      error: false,
     };
   }
 
   static error(
     message: string,
     status: number = 500,
-    errors?: string[],
+    errorMessages?: string[],
   ): ApiResponse {
     return {
       data: null,
       message,
       status,
-      errors: errors || [message],
+      error: true,
+      errorMessages: errorMessages || [message],
     };
   }
 
@@ -47,6 +49,7 @@ export class ResponseUtil {
       data: null,
       message,
       status: 200,
+      error: false,
     };
   }
 }

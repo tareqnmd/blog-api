@@ -26,7 +26,8 @@ export class ResponseInterceptor<T>
           typeof data === 'object' &&
           'status' in data &&
           'message' in data &&
-          'data' in data
+          'data' in data &&
+          'error' in data
         ) {
           return data as ApiResponse<T>;
         }
@@ -35,6 +36,7 @@ export class ResponseInterceptor<T>
           data: data ?? null,
           message: this.getSuccessMessage(context, data),
           status: response.statusCode,
+          error: false,
         };
       }),
     );

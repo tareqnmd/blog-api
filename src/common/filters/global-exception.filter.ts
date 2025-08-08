@@ -20,7 +20,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let message = 'Internal server error';
-    let errors: string[] = ['An unexpected error occurred'];
+    let errorMessages: string[] = ['An unexpected error occurred'];
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
@@ -29,7 +29,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       if (typeof exceptionResponse === 'string') {
         // Simple string response
         message = exceptionResponse;
-        errors = [exceptionResponse];
+        errorMessages = [exceptionResponse];
       } else if (
         typeof exceptionResponse === 'object' &&
         exceptionResponse !== null
@@ -38,35 +38,37 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
         // Handle validation pipe errors (class-validator)
         if (Array.isArray(responseObj.message)) {
-          errors = responseObj.message.map((msg) => String(msg));
-          message = `Validation failed: ${errors.join(', ')}`;
+          errorMessages = responseObj.message.map((msg) => String(msg));
+          message = `Validation failed: ${errorMessages.join(', ')}`;
         }
         // Handle custom errors array
         else if (Array.isArray(responseObj.errors)) {
-          errors = responseObj.errors.map((err) => String(err));
+          errorMessages = responseObj.errors.map((err) => String(err));
           message =
-            (responseObj.message as string) || errors[0] || 'Request failed';
+            (responseObj.message as string) ||
+            errorMessages[0] ||
+            'Request failed';
         }
         // Handle single error message (NotFoundException, BadRequestException, etc.)
         else if (responseObj.message) {
           message = responseObj.message as string;
-          errors = [message];
+          errorMessages = [message];
         }
         // Fallback for other object structures
         else if (responseObj.error) {
           message = responseObj.error as string;
-          errors = [message];
+          errorMessages = [message];
         } else {
           message = exception.message || 'Request failed';
-          errors = [message];
+          errorMessages = [message];
         }
       }
     } else if (exception instanceof Error) {
       message = exception.message || 'An error occurred';
-      errors = [message];
+      errorMessages = [message];
     } else {
       message = 'An unexpected error occurred';
-      errors = [message];
+      errorMessages = [message];
     }
 
     // Log the error
@@ -79,7 +81,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       data: null,
       message,
       status,
-      errors,
+      error: true,
+      errorMessages,
     };
 
     response.status(status).json(errorResponse);
