@@ -52,12 +52,26 @@ export class BlogsService {
    * @returns A string with the blog's status.
    */
   async getBlogs(blogFilterDto: BlogFilterDto) {
-    const query = this.blogRepository.find({
-      where: {
+    const queryBuilder = this.blogRepository
+      .createQueryBuilder('blog')
+      .leftJoinAndSelect('blog.author', 'author')
+      .leftJoinAndSelect('blog.tags', 'tags')
+      .leftJoinAndSelect('blog.metaOptions', 'metaOptions');
+
+    if (blogFilterDto.status) {
+      queryBuilder.andWhere('blog.status = :status', {
         status: blogFilterDto.status,
-      },
-    });
-    return query;
+      });
+    }
+
+    if (blogFilterDto.title) {
+      queryBuilder.andWhere('blog.title LIKE :title', {
+        title: `%${blogFilterDto.title}%`,
+      });
+    }
+
+    const blogs = await queryBuilder.getMany();
+    return blogs;
   }
 
   /**
