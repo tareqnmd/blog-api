@@ -1,6 +1,6 @@
 export interface ApiResponse<T = any> {
-  data?: T;
+  data: T | null;
   message: string;
   status: number;
-  error?: string | object;
+  errors?: string[];
 }

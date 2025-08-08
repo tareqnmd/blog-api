@@ -20,7 +20,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let message = 'Internal server error';
-    let error: string | object = 'An unexpected error occurred';
+    let errors: string[] = ['An unexpected error occurred'];
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
@@ -28,7 +28,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
       if (typeof exceptionResponse === 'string') {
         message = exceptionResponse;
-        error = exceptionResponse;
+        errors = [exceptionResponse];
       } else if (
         typeof exceptionResponse === 'object' &&
         exceptionResponse !== null
@@ -38,11 +38,23 @@ export class GlobalExceptionFilter implements ExceptionFilter {
           (responseObj.message as string) ||
           (responseObj.error as string) ||
           exception.message;
-        error = responseObj;
+
+        // Handle different error formats
+        if (Array.isArray(responseObj.message)) {
+          errors = responseObj.message as string[];
+        } else if (Array.isArray(responseObj.errors)) {
+          errors = responseObj.errors as string[];
+        } else if (responseObj.message) {
+          errors = [responseObj.message as string];
+        } else if (responseObj.error) {
+          errors = [responseObj.error as string];
+        } else {
+          errors = [exception.message];
+        }
       }
     } else if (exception instanceof Error) {
       message = exception.message;
-      error = exception.message;
+      errors = [exception.message];
     }
 
     // Log the error
@@ -52,9 +64,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     );
 
     const errorResponse: ApiResponse = {
+      data: null,
       message,
       status,
-      error,
+      errors,
     };
 
     response.status(status).json(errorResponse);

@@ -25,13 +25,14 @@ export class ResponseInterceptor<T>
           data &&
           typeof data === 'object' &&
           'status' in data &&
-          'message' in data
+          'message' in data &&
+          'data' in data
         ) {
           return data as ApiResponse<T>;
         }
 
         return {
-          data,
+          data: data ?? null,
           message: this.getSuccessMessage(context, data),
           status: response.statusCode,
         };
