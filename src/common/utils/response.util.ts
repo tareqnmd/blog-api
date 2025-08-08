@@ -7,7 +7,7 @@ export class ResponseUtil {
     status: number = 200,
   ): ApiResponse<T> {
     return {
-      data,
+      data: data ?? null,
       message,
       status,
     };
@@ -16,12 +16,13 @@ export class ResponseUtil {
   static error(
     message: string,
     status: number = 500,
-    error?: string | object,
+    errors?: string[],
   ): ApiResponse {
     return {
+      data: null,
       message,
       status,
-      error: error || message,
+      errors: errors || [message],
     };
   }
 
@@ -43,6 +44,7 @@ export class ResponseUtil {
     message: string = 'Resource deleted successfully',
   ): ApiResponse {
     return {
+      data: null,
       message,
       status: 200,
     };

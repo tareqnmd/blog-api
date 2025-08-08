@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ApiResponseDto<T = any> {
-  @ApiProperty({ description: 'Response data', required: false })
-  data?: T;
+  @ApiProperty({ description: 'Response data' })
+  data: T | null;
 
   @ApiProperty({ description: 'Response message' })
   message: string;
@@ -10,6 +10,10 @@ export class ApiResponseDto<T = any> {
   @ApiProperty({ description: 'HTTP status code' })
   status: number;
 
-  @ApiProperty({ description: 'Error details', required: false })
-  error?: string | object;
+  @ApiProperty({
+    description: 'Array of error messages',
+    required: false,
+    type: [String],
+  })
+  errors?: string[];
 }

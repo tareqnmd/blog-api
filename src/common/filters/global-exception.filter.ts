@@ -27,6 +27,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       const exceptionResponse = exception.getResponse();
 
       if (typeof exceptionResponse === 'string') {
+        // Simple string response
         message = exceptionResponse;
         errors = [exceptionResponse];
       } else if (
@@ -34,33 +35,44 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         exceptionResponse !== null
       ) {
         const responseObj = exceptionResponse as Record<string, unknown>;
-        message =
-          (responseObj.message as string) ||
-          (responseObj.error as string) ||
-          exception.message;
 
-        // Handle different error formats
+        // Handle validation pipe errors (class-validator)
         if (Array.isArray(responseObj.message)) {
-          errors = responseObj.message as string[];
-        } else if (Array.isArray(responseObj.errors)) {
-          errors = responseObj.errors as string[];
-        } else if (responseObj.message) {
-          errors = [responseObj.message as string];
-        } else if (responseObj.error) {
-          errors = [responseObj.error as string];
+          errors = responseObj.message.map((msg) => String(msg));
+          message = `Validation failed: ${errors.join(', ')}`;
+        }
+        // Handle custom errors array
+        else if (Array.isArray(responseObj.errors)) {
+          errors = responseObj.errors.map((err) => String(err));
+          message =
+            (responseObj.message as string) || errors[0] || 'Request failed';
+        }
+        // Handle single error message (NotFoundException, BadRequestException, etc.)
+        else if (responseObj.message) {
+          message = responseObj.message as string;
+          errors = [message];
+        }
+        // Fallback for other object structures
+        else if (responseObj.error) {
+          message = responseObj.error as string;
+          errors = [message];
         } else {
-          errors = [exception.message];
+          message = exception.message || 'Request failed';
+          errors = [message];
         }
       }
     } else if (exception instanceof Error) {
-      message = exception.message;
-      errors = [exception.message];
+      message = exception.message || 'An error occurred';
+      errors = [message];
+    } else {
+      message = 'An unexpected error occurred';
+      errors = [message];
     }
 
     // Log the error
     this.logger.error(
       `${request.method} ${request.url} - ${status} - ${message}`,
-      exception instanceof Error ? exception.stack : undefined,
+      exception instanceof Error ? exception.stack : String(exception),
     );
 
     const errorResponse: ApiResponse = {
