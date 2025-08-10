@@ -16,6 +16,7 @@ import { BlogFilterDto } from './dto/blog-filter.dto';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { PatchBlogDto } from './dto/patch-blog.dto';
 import { PutBlogDto } from './dto/put-blog.dto';
+import { UpdateBulkBlogStatusDto } from './dto/updateBulkBlogStatus';
 
 /**
  * BlogsController is a controller that provides methods to create, get, update, and delete blogs.
@@ -110,11 +111,31 @@ export class BlogsController {
     },
   })
   @Patch(':id')
-  updateBlogStatus(
+  updatePartialBlog(
     @Param('id', ParseIntPipe) id: number,
     @Body() patchBlogDto: PatchBlogDto,
   ) {
-    return this.blogsService.updateBlogStatus(id, patchBlogDto);
+    return this.blogsService.updatePartialBlog(id, patchBlogDto);
+  }
+
+  /**
+   * Updates the status of multiple blogs.
+   * @param ids - The ids of the blogs to update.
+   * @param status - The status to update the blogs to.
+   * @returns A string with the blog's status.
+   */
+  @ApiOperation({ summary: 'Update bulk blog status' })
+  @ApiResponse({
+    status: 200,
+    content: {
+      'application/json': {},
+    },
+  })
+  @Patch('bulk-status')
+  updateBulkBlogStatus(
+    @Body() updateBulkBlogStatusDto: UpdateBulkBlogStatusDto,
+  ) {
+    return this.blogsService.updateBulkBlogStatus(updateBulkBlogStatusDto);
   }
 
   /**
