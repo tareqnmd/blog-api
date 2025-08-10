@@ -10,6 +10,7 @@ import { BlogFilterDto } from './dto/blog-filter.dto';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { PatchBlogDto } from './dto/patch-blog.dto';
 import { PutBlogDto } from './dto/put-blog.dto';
+import { BlogStatus } from './enum/blog-status.enum';
 
 /**
  * BlogsService is a service that provides methods to create, get, update, and delete blogs.
@@ -141,12 +142,18 @@ export class BlogsService {
     };
   }
 
-  async updateBulkBlogStatus(ids: number[], status: string) {
+  /**
+   * Updates the status of multiple blogs.
+   * @param ids - The ids of the blogs to update.
+   * @param status - The status to update the blogs to.
+   * @returns A string with the blog's status.
+   */
+  async updateBulkBlogStatus(ids: number[], status: BlogStatus) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      await queryRunner.update(Blog, ids, { status });
+      await queryRunner.manager.update(Blog, ids, { status });
       await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();
