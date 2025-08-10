@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generateSlugText } from 'src/common/helper';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { TagsService } from '../tags/tags.service';
 import { UsersService } from '../users/users.service';
 import { Blog } from './blog.entity';
@@ -26,6 +26,7 @@ export class BlogsService {
     private readonly usersService: UsersService,
     private readonly tagsService: TagsService,
     private readonly configService: ConfigService,
+    private readonly dataSource: DataSource,
   ) {}
 
   /**
@@ -138,5 +139,20 @@ export class BlogsService {
     return {
       message: 'Blog deleted successfully',
     };
+  }
+
+  async updateBulkBlogStatus(ids: number[], status: string) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await queryRunner.update(Blog, ids, { status });
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }
