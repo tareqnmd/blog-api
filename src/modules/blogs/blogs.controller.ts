@@ -98,27 +98,6 @@ export class BlogsController {
   }
 
   /**
-   * Updates a blog status.
-   * @param id - The id of the blog to update.
-   * @param patchBlogDto - The blog to update.
-   * @returns A string with the blog's status.
-   */
-  @ApiOperation({ summary: 'Update blog status' })
-  @ApiResponse({
-    status: 200,
-    content: {
-      'application/json': {},
-    },
-  })
-  @Patch(':id')
-  updatePartialBlog(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() patchBlogDto: PatchBlogDto,
-  ) {
-    return this.blogsService.updatePartialBlog(id, patchBlogDto);
-  }
-
-  /**
    * Updates the status of multiple blogs.
    * @param ids - The ids of the blogs to update.
    * @param status - The status to update the blogs to.
@@ -137,6 +116,27 @@ export class BlogsController {
   ) {
     console.log(updateBulkBlogStatusDto);
     return this.blogsService.updateBulkBlogStatus(updateBulkBlogStatusDto);
+  }
+
+  /**
+   * Updates a blog status.
+   * @param id - The id of the blog to update.
+   * @param patchBlogDto - The blog to update.
+   * @returns A string with the blog's status.
+   */
+  @ApiOperation({ summary: 'Update blog status' })
+  @ApiResponse({
+    status: 200,
+    content: {
+      'application/json': {},
+    },
+  })
+  @Patch(':id')
+  updatePartialBlog(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() patchBlogDto: PatchBlogDto,
+  ) {
+    return this.blogsService.updatePartialBlog(id, patchBlogDto);
   }
 
   /**
