@@ -158,7 +158,10 @@ export class BlogsService {
         status: updateBulkBlogStatusDto.status,
       });
       await queryRunner.commitTransaction();
-      return updateBulkBlogStatusDto.ids;
+      return {
+        message: 'Blogs status updated successfully',
+        data: updateBulkBlogStatusDto.ids,
+      };
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw error;

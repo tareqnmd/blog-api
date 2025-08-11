@@ -29,11 +29,26 @@ export class ResponseInterceptor<T>
           'data' in data &&
           'error' in data
         ) {
-          return data as ApiResponse<T>;
+          // If response already has the full structure, extract data from data field
+          const apiResponse = data as ApiResponse<T>;
+          return {
+            data: apiResponse.data,
+            message: apiResponse.message,
+            status: apiResponse.status,
+            error: apiResponse.error,
+          };
+        }
+
+        // If data has a 'data' property, use the content inside data
+        let responseData: T | null;
+        if (data && typeof data === 'object' && 'data' in data) {
+          responseData = (data as { data: T }).data;
+        } else {
+          responseData = data ?? null;
         }
 
         return {
-          data: data ?? null,
+          data: responseData,
           message: this.getSuccessMessage(context, data),
           status: response.statusCode,
           error: false,
