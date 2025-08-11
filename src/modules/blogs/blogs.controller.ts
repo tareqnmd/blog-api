@@ -135,6 +135,7 @@ export class BlogsController {
   updateBulkBlogStatus(
     @Body() updateBulkBlogStatusDto: UpdateBulkBlogStatusDto,
   ) {
+    console.log(updateBulkBlogStatusDto);
     return this.blogsService.updateBulkBlogStatus(updateBulkBlogStatusDto);
   }
 

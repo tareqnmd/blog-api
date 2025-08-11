@@ -13,7 +13,7 @@ import { BlogStatus } from '../enum/blog-status.enum';
  */
 export class UpdateBulkBlogStatusDto {
   /**
-   * The tags of the blog.
+   * The ids of the blog.
    */
   @ApiProperty()
   @IsNotEmpty()
