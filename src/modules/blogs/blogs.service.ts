@@ -149,7 +149,6 @@ export class BlogsService {
    * @returns A string with the blog's status.
    */
   async updateBulkBlogStatus(updateBulkBlogStatusDto: UpdateBulkBlogStatusDto) {
-    console.log(updateBulkBlogStatusDto);
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
