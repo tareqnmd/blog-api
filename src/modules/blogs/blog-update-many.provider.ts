@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { Blog } from './blog.entity';
 import { UpdateBulkBlogStatusDto } from './dto/updateBulkBlogStatus';
@@ -15,8 +19,13 @@ export class BlogUpdateMany {
    */
   async updateBulkBlogStatus(updateBulkBlogStatusDto: UpdateBulkBlogStatusDto) {
     const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+    } catch {
+      throw new RequestTimeoutException('Failed to connect to the database');
+    }
+
     try {
       await queryRunner.manager.update(Blog, updateBulkBlogStatusDto.ids, {
         status: updateBulkBlogStatusDto.status,
@@ -28,7 +37,9 @@ export class BlogUpdateMany {
       };
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      throw error;
+      throw new ConflictException('Failed to update blogs status', {
+        description: String(error),
+      });
     } finally {
       await queryRunner.release();
     }
