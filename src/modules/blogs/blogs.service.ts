@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generateSlugText } from 'src/common/helper';
 import { DataSource, Repository } from 'typeorm';
 import { TagsService } from '../tags/tags.service';
 import { UsersService } from '../users/users.service';
+import { BlogUpdateMany } from './blog-update-many.provider';
 import { Blog } from './blog.entity';
 import { BlogFilterDto } from './dto/blog-filter.dto';
 import { CreateBlogDto } from './dto/create-blog.dto';
@@ -26,7 +26,7 @@ export class BlogsService {
     private readonly blogRepository: Repository<Blog>,
     private readonly usersService: UsersService,
     private readonly tagsService: TagsService,
-    private readonly configService: ConfigService,
+    private readonly blogUpdateMany: BlogUpdateMany,
     private readonly dataSource: DataSource,
   ) {}
 
@@ -149,23 +149,8 @@ export class BlogsService {
    * @returns A string with the blog's status.
    */
   async updateBulkBlogStatus(updateBulkBlogStatusDto: UpdateBulkBlogStatusDto) {
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      await queryRunner.manager.update(Blog, updateBulkBlogStatusDto.ids, {
-        status: updateBulkBlogStatusDto.status,
-      });
-      await queryRunner.commitTransaction();
-      return {
-        message: 'Blogs status updated successfully',
-        data: updateBulkBlogStatusDto.ids,
-      };
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      throw error;
-    } finally {
-      await queryRunner.release();
-    }
+    return await this.blogUpdateMany.updateBulkBlogStatus(
+      updateBulkBlogStatusDto,
+    );
   }
 }
