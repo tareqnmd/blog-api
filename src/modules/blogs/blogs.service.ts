@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generateSlugText } from 'src/common/helper';
 import { Repository } from 'typeorm';
+import { PaginationProvider } from '../pagination/pagination.provider';
 import { TagsService } from '../tags/tags.service';
 import { UsersService } from '../users/users.service';
 import { BlogUpdateMany } from './blog-update-many.provider';
@@ -27,6 +28,7 @@ export class BlogsService {
     private readonly usersService: UsersService,
     private readonly tagsService: TagsService,
     private readonly blogUpdateMany: BlogUpdateMany,
+    private readonly paginationProvider: PaginationProvider,
   ) {}
 
   /**
@@ -59,11 +61,6 @@ export class BlogsService {
       .leftJoinAndSelect('blog.tags', 'tags')
       .leftJoinAndSelect('blog.metaOptions', 'metaOptions');
 
-    if (!blogFilterDto.ignorePagination) {
-      queryBuilder.take(blogFilterDto.limit);
-      queryBuilder.skip((blogFilterDto.page - 1) * blogFilterDto.limit);
-    }
-
     if (blogFilterDto.status) {
       queryBuilder.andWhere('blog.status = :status', {
         status: blogFilterDto.status,
@@ -76,8 +73,16 @@ export class BlogsService {
       });
     }
 
-    const blogs = await queryBuilder.getMany();
-    return blogs;
+    const paginatedBlogs = await this.paginationProvider.PaginationQuery(
+      {
+        page: blogFilterDto.page,
+        limit: blogFilterDto.limit,
+        ignorePagination: blogFilterDto.ignorePagination,
+      },
+      this.blogRepository,
+    );
+
+    return paginatedBlogs;
   }
 
   /**

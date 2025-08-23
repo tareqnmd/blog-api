@@ -6,7 +6,10 @@ import {
   IsPositive,
   Min,
 } from 'class-validator';
-import { DEFAULT_PAGINATION_LIMIT, DEFAULT_PAGINATION_PAGE } from '../constant';
+import {
+  DEFAULT_PAGINATION_LIMIT,
+  DEFAULT_PAGINATION_PAGE,
+} from '../../common/constant';
 
 export class PaginationDto {
   @ApiProperty({ required: false, default: DEFAULT_PAGINATION_PAGE })

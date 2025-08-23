@@ -2,8 +2,8 @@
 export * from './interfaces/api-response.interface';
 
 // DTOs
+export * from '../modules/pagination/pagination.dto';
 export * from './dto/api-response.dto';
-export * from './dto/pagination.dto';
 
 // Interceptors
 export * from './interceptors/response.interceptor';
