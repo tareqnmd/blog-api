@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generateSlugText } from 'src/common/helper';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { TagsService } from '../tags/tags.service';
 import { UsersService } from '../users/users.service';
 import { BlogUpdateMany } from './blog-update-many.provider';
@@ -27,7 +27,6 @@ export class BlogsService {
     private readonly usersService: UsersService,
     private readonly tagsService: TagsService,
     private readonly blogUpdateMany: BlogUpdateMany,
-    private readonly dataSource: DataSource,
   ) {}
 
   /**
@@ -59,6 +58,11 @@ export class BlogsService {
       .leftJoinAndSelect('blog.author', 'author')
       .leftJoinAndSelect('blog.tags', 'tags')
       .leftJoinAndSelect('blog.metaOptions', 'metaOptions');
+
+    if (!blogFilterDto.ignorePagination) {
+      queryBuilder.take(blogFilterDto.limit);
+      queryBuilder.skip(blogFilterDto.page);
+    }
 
     if (blogFilterDto.status) {
       queryBuilder.andWhere('blog.status = :status', {
