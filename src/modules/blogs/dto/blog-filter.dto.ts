@@ -1,4 +1,4 @@
-import { ApiProperty, IntersectionType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { PaginationDto } from 'src/common';
 import { BlogStatus } from '../enum/blog-status.enum';
@@ -6,7 +6,7 @@ import { BlogStatus } from '../enum/blog-status.enum';
 /**
  * BlogFilterDto is a DTO for filtering blogs.
  */
-export class BlogFilterBaseDto {
+export class BlogFilterDto extends PaginationDto {
   /**
    * The status of the blog.
    */
@@ -42,8 +42,3 @@ export class BlogFilterBaseDto {
   @IsString()
   endDate?: string;
 }
-
-export class BlogFilterDto extends IntersectionType(
-  BlogFilterBaseDto,
-  PaginationDto,
-) {}
