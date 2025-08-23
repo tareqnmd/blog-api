@@ -61,7 +61,7 @@ export class BlogsService {
 
     if (!blogFilterDto.ignorePagination) {
       queryBuilder.take(blogFilterDto.limit);
-      queryBuilder.skip(blogFilterDto.page);
+      queryBuilder.skip((blogFilterDto.page - 1) * blogFilterDto.limit);
     }
 
     if (blogFilterDto.status) {

@@ -12,15 +12,15 @@ export class PaginationDto {
   @IsNumber()
   @IsPositive()
   @Min(1)
-  page?: number = DEFAULT_PAGINATION_PAGE;
+  page: number = DEFAULT_PAGINATION_PAGE;
 
   @IsOptional()
   @IsNumber()
   @IsPositive()
   @Min(1)
-  limit?: number = DEFAULT_PAGINATION_LIMIT;
+  limit: number = DEFAULT_PAGINATION_LIMIT;
 
   @IsOptional()
   @IsBoolean()
-  ignorePagination?: boolean = false;
+  ignorePagination: boolean = false;
 }
