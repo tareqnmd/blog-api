@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IMeta } from 'src/modules/pagination/pagination.interface';
 
 export class ApiResponseDto<T = any> {
   @ApiProperty({ description: 'Response data' })
@@ -19,4 +20,10 @@ export class ApiResponseDto<T = any> {
     type: [String],
   })
   errorMessages?: string[];
+
+  @ApiProperty({
+    description: 'Meta information (pagination, etc.)',
+    required: false,
+  })
+  meta?: IMeta;
 }
