@@ -1,9 +1,11 @@
+export interface IMeta {
+  itemsPerPage: number;
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+}
+
 export interface IPagination<T> {
-  meta: {
-    itemsPerPage: number;
-    totalItems: number;
-    totalPages: number;
-    currentPage: number;
-  };
+  meta: IMeta;
   data: T[];
 }

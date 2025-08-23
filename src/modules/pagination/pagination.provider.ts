@@ -8,6 +8,7 @@ export class PaginationProvider {
   async PaginationQuery<T extends ObjectLiteral>(
     paginateQuery: PaginationDto,
     queryBuilder: SelectQueryBuilder<T>,
+    totalCount: number,
   ): Promise<IPagination<T>> {
     const { page, limit, ignorePagination } = paginateQuery;
 
@@ -17,7 +18,7 @@ export class PaginationProvider {
         data,
         meta: {
           itemsPerPage: data.length,
-          totalItems: data.length,
+          totalItems: totalCount,
           totalPages: 1,
           currentPage: 1,
         },
@@ -25,18 +26,14 @@ export class PaginationProvider {
     }
 
     const skip = (page - 1) * limit;
-
-    const totalItems = await queryBuilder.getCount();
-    const totalPages = Math.ceil(totalItems / limit);
-
     const data = await queryBuilder.skip(skip).take(limit).getMany();
 
     return {
       data,
       meta: {
         itemsPerPage: limit,
-        totalItems,
-        totalPages,
+        totalItems: totalCount,
+        totalPages: Math.ceil(totalCount / limit),
         currentPage: page,
       },
     };

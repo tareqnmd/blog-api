@@ -55,6 +55,7 @@ export class BlogsService {
    * @returns A paginated list of blogs.
    */
   async getBlogs(blogFilterDto: BlogFilterDto) {
+    const totalCount = await this.blogRepository.count();
     const queryBuilder = this.blogRepository
       .createQueryBuilder('blog')
       .leftJoinAndSelect('blog.author', 'author')
@@ -92,9 +93,18 @@ export class BlogsService {
         ignorePagination: blogFilterDto.ignorePagination,
       },
       queryBuilder,
+      totalCount,
     );
 
-    return paginatedBlogs;
+    return {
+      ...paginatedBlogs,
+      meta: {
+        totalItems: totalCount,
+        totalPages: Math.ceil(totalCount / blogFilterDto.limit),
+        currentPage: blogFilterDto.page,
+        itemsPerPage: blogFilterDto.limit,
+      },
+    };
   }
 
   /**
