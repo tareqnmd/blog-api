@@ -73,7 +73,6 @@ export class BlogsController {
   })
   @Get()
   getBlogs(@Query() blogFilterDto: BlogFilterDto) {
-    console.log(blogFilterDto);
     return this.blogsService.getBlogs(blogFilterDto);
   }
 
