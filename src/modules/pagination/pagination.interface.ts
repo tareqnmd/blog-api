@@ -5,12 +5,5 @@ export interface IPagination<T> {
     totalPages: number;
     currentPage: number;
   };
-  links: {
-    first: string;
-    last: string;
-    next: string;
-    previous: string;
-    current: string;
-  };
   data: T[];
 }

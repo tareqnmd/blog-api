@@ -1,19 +1,44 @@
 import { Injectable } from '@nestjs/common';
-import { ObjectLiteral, Repository } from 'typeorm';
+import { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 import { PaginationDto } from './pagination.dto';
+import { IPagination } from './pagination.interface';
 
 @Injectable()
 export class PaginationProvider {
   async PaginationQuery<T extends ObjectLiteral>(
     paginateQuery: PaginationDto,
-    repository: Repository<T>,
-  ) {
-    const query = repository.createQueryBuilder(
-      paginateQuery.ignorePagination ? '' : 'p',
-    );
+    queryBuilder: SelectQueryBuilder<T>,
+  ): Promise<IPagination<T>> {
     const { page, limit, ignorePagination } = paginateQuery;
+
+    if (ignorePagination) {
+      const data = await queryBuilder.getMany();
+      return {
+        data,
+        meta: {
+          itemsPerPage: data.length,
+          totalItems: data.length,
+          totalPages: 1,
+          currentPage: 1,
+        },
+      };
+    }
+
     const skip = (page - 1) * limit;
-    const take = ignorePagination ? undefined : limit;
-    return query.skip(skip).take(take).getMany();
+
+    const totalItems = await queryBuilder.getCount();
+    const totalPages = Math.ceil(totalItems / limit);
+
+    const data = await queryBuilder.skip(skip).take(limit).getMany();
+
+    return {
+      data,
+      meta: {
+        itemsPerPage: limit,
+        totalItems,
+        totalPages,
+        currentPage: page,
+      },
+    };
   }
 }

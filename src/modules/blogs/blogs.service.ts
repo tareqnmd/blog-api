@@ -52,7 +52,7 @@ export class BlogsService {
   /**
    * Gets all blogs.
    * @param blogFilterDto - The filter to get blogs.
-   * @returns A string with the blog's status.
+   * @returns A paginated list of blogs.
    */
   async getBlogs(blogFilterDto: BlogFilterDto) {
     const queryBuilder = this.blogRepository
@@ -73,13 +73,25 @@ export class BlogsService {
       });
     }
 
+    if (blogFilterDto.startDate) {
+      queryBuilder.andWhere('blog.createdAt >= :startDate', {
+        startDate: blogFilterDto.startDate,
+      });
+    }
+
+    if (blogFilterDto.endDate) {
+      queryBuilder.andWhere('blog.createdAt <= :endDate', {
+        endDate: blogFilterDto.endDate,
+      });
+    }
+
     const paginatedBlogs = await this.paginationProvider.PaginationQuery(
       {
         page: blogFilterDto.page,
         limit: blogFilterDto.limit,
         ignorePagination: blogFilterDto.ignorePagination,
       },
-      this.blogRepository,
+      queryBuilder,
     );
 
     return paginatedBlogs;
