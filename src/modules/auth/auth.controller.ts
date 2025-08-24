@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { AuthService } from './auth.service';
 import { SigninDto } from './dto/signin.dto';
+import { AuthService } from './provider/auth.service';
 
 /**
  * AuthController is a controller that provides methods to sign in and sign up.

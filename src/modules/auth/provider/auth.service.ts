@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import { SigninDto } from './dto/signin.dto';
+import { UsersService } from '../../users/users.service';
+import { SigninDto } from '../dto/signin.dto';
 
 /**
  * AuthService is a service that provides methods to sign in and sign up.
