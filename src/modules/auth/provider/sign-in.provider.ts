@@ -17,8 +17,9 @@ export class SignInProvider {
         user.password,
       );
       if (!isPasswordValid) {
-        throw new UnauthorizedException('Invalid password');
+        throw new UnauthorizedException('Invalid credentials');
       }
+      return user;
     } catch {
       throw new UnauthorizedException('Invalid credentials');
     }
