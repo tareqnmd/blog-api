@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '../../users/provider/users.service';
 import { SigninDto } from '../dto/signin.dto';
+import { SignInProvider } from './sign-in.provider';
 
 /**
  * AuthService is a service that provides methods to sign in and sign up.
@@ -11,7 +11,7 @@ export class AuthService {
    * Creates an instance of AuthService.
    * @param usersService - The users service.
    */
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly signInProvider: SignInProvider) {}
 
   /**
    * Signs in a user.
@@ -19,6 +19,6 @@ export class AuthService {
    * @returns A string with the user's name and email.
    */
   signin(signinDto: SigninDto) {
-    return signinDto;
+    return this.signInProvider.signIn(signinDto);
   }
 }

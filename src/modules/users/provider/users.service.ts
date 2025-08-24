@@ -6,6 +6,7 @@ import { PatchUserDto } from '../dto/patch-user.dto';
 import { UserFilterDto } from '../dto/user-filter.dto';
 import { User } from '../user.entity';
 import { CreateUserProvider } from './create-user.provider';
+import { FindUserByEmailProvider } from './find-user-by-email.provider';
 
 /**
  * UsersService is a service that provides methods to create, get, update, and delete users.
@@ -20,6 +21,7 @@ export class UsersService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private readonly createUserProvider: CreateUserProvider,
+    private readonly findUserByEmailProvider: FindUserByEmailProvider,
   ) {}
 
   /**
@@ -44,6 +46,15 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
     return user;
+  }
+
+  /**
+   * Finds a user by email.
+   * @param email - The email of the user to find.
+   * @returns A string with the user's name and email.
+   */
+  async findUserByEmail(email: string) {
+    return this.findUserByEmailProvider.findUserByEmail(email);
   }
 
   /**
