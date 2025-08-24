@@ -11,9 +11,9 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserFilterDto } from './dto/user-filter.dto';
-import { UsersService } from './users.service';
 import { PatchUserDto } from './dto/patch-user.dto';
+import { UserFilterDto } from './dto/user-filter.dto';
+import { UsersService } from './provider/users.service';
 
 /**
  * UsersController is a controller that provides methods to create, get, update, and delete users.

@@ -48,7 +48,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(6)
-  @MaxLength(20)
+  @MaxLength(96)
   @Matches(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
     {

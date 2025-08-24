@@ -4,8 +4,8 @@ import {
   RequestTimeoutException,
 } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { Blog } from './blog.entity';
-import { UpdateBulkBlogStatusDto } from './dto/updateBulkBlogStatus';
+import { Blog } from '../blog.entity';
+import { UpdateBulkBlogStatusDto } from '../dto/updateBulkBlogStatus';
 
 @Injectable()
 export class BlogUpdateMany {

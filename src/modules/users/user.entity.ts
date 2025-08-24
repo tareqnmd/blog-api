@@ -29,7 +29,7 @@ export class User extends DefaultEntity {
 
   @Column({
     type: 'varchar',
-    length: 20,
+    length: 96,
     nullable: false,
   })
   password: string;

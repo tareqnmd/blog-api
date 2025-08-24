@@ -11,12 +11,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { BlogsService } from './blogs.service';
 import { BlogFilterDto } from './dto/blog-filter.dto';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { PatchBlogDto } from './dto/patch-blog.dto';
 import { PutBlogDto } from './dto/put-blog.dto';
 import { UpdateBulkBlogStatusDto } from './dto/updateBulkBlogStatus';
+import { BlogsService } from './provider/blogs.service';
 
 /**
  * BlogsController is a controller that provides methods to create, get, update, and delete blogs.

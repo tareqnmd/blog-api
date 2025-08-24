@@ -3,10 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaginationModule } from '../pagination/pagination.module';
 import { TagsModule } from '../tags/tags.module';
 import { UsersModule } from '../users/users.module';
-import { BlogUpdateMany } from './blog-update-many.provider';
 import { Blog } from './blog.entity';
 import { BlogsController } from './blogs.controller';
-import { BlogsService } from './blogs.service';
+import { BlogUpdateMany } from './provider/blog-update-many.provider';
+import { BlogsService } from './provider/blogs.service';
 
 @Module({
   providers: [BlogsService, BlogUpdateMany],

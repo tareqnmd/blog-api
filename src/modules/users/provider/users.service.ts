@@ -1,15 +1,11 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { PatchUserDto } from './dto/patch-user.dto';
-import { UserFilterDto } from './dto/user-filter.dto';
-import { UserRoles } from './enum/user-role.enum';
-import { User } from './user.entity';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { PatchUserDto } from '../dto/patch-user.dto';
+import { UserFilterDto } from '../dto/user-filter.dto';
+import { User } from '../user.entity';
+import { CreateUserProvider } from './create-user.provider';
 
 /**
  * UsersService is a service that provides methods to create, get, update, and delete users.
@@ -23,6 +19,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private readonly createUserProvider: CreateUserProvider,
   ) {}
 
   /**
@@ -31,21 +28,7 @@ export class UsersService {
    * @returns A string with the user's name and email.
    */
   async createUser(createUserDto: CreateUserDto) {
-    //Check if user already exists
-    const existingUser = await this.userRepository.findOne({
-      where: { email: createUserDto.email },
-    });
-    if (existingUser) {
-      throw new BadRequestException('User already exists');
-    }
-    //Create user
-    const user = this.userRepository.create({
-      ...createUserDto,
-      role: UserRoles.VIEWER,
-    });
-    //Save user
-    await this.userRepository.save(user);
-    return user;
+    return this.createUserProvider.createUser(createUserDto);
   }
 
   /**

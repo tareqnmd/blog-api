@@ -2,16 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generateSlugText } from 'src/common/helper';
 import { Repository } from 'typeorm';
-import { PaginationProvider } from '../pagination/pagination.provider';
-import { TagsService } from '../tags/tags.service';
-import { UsersService } from '../users/users.service';
+import { PaginationProvider } from '../../pagination/pagination.provider';
+import { TagsService } from '../../tags/tags.service';
+import { UsersService } from '../../users/provider/users.service';
+import { Blog } from '../blog.entity';
+import { BlogFilterDto } from '../dto/blog-filter.dto';
+import { CreateBlogDto } from '../dto/create-blog.dto';
+import { PatchBlogDto } from '../dto/patch-blog.dto';
+import { PutBlogDto } from '../dto/put-blog.dto';
+import { UpdateBulkBlogStatusDto } from '../dto/updateBulkBlogStatus';
 import { BlogUpdateMany } from './blog-update-many.provider';
-import { Blog } from './blog.entity';
-import { BlogFilterDto } from './dto/blog-filter.dto';
-import { CreateBlogDto } from './dto/create-blog.dto';
-import { PatchBlogDto } from './dto/patch-blog.dto';
-import { PutBlogDto } from './dto/put-blog.dto';
-import { UpdateBulkBlogStatusDto } from './dto/updateBulkBlogStatus';
 
 /**
  * BlogsService is a service that provides methods to create, get, update, and delete blogs.
