@@ -31,6 +31,10 @@ export class AccessTokenGuard implements CanActivate {
         token,
         this.jwtConfiguration,
       );
+      const isExpired = Date.now() >= payload?.exp * 1000;
+      if (isExpired) {
+        throw new UnauthorizedException();
+      }
       request[REQUEST_USER_KEY] = payload;
     } catch (error) {
       throw new UnauthorizedException(error);
