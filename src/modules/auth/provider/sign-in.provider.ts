@@ -33,9 +33,11 @@ export class SignInProvider {
       };
       const accessToken = await this.jwtService.signAsync(payload, {
         expiresIn: this.configService.get('jwt.accessTokenTtl'),
+        secret: this.configService.get('jwt.secret'),
       });
       const refreshToken = await this.jwtService.signAsync(payload, {
         expiresIn: this.configService.get('jwt.refreshTokenTtl'),
+        secret: this.configService.get('jwt.secret'),
       });
       return {
         token: {
@@ -44,6 +46,7 @@ export class SignInProvider {
         },
         user: {
           id: user.id,
+          name: `${user.firstName} ${user.lastName}`,
           email: user.email,
           role: user.role,
         },
