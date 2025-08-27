@@ -15,7 +15,7 @@ export class SignInProvider {
     private readonly usersService: UsersService,
     private readonly hashingProvider: HashingProvider,
     private readonly jwtService: JwtService,
-    private readonly jwtConfig: ConfigService,
+    private readonly configService: ConfigService,
   ) {}
   async signIn(signInDto: SigninDto) {
     try {
@@ -32,10 +32,10 @@ export class SignInProvider {
         email: user.email,
       };
       const accessToken = await this.jwtService.signAsync(payload, {
-        expiresIn: this.jwtConfig.get('accessTokenTtl'),
+        expiresIn: this.configService.get('jwt.accessTokenTtl'),
       });
       const refreshToken = await this.jwtService.signAsync(payload, {
-        expiresIn: this.jwtConfig.get('refreshTokenTtl'),
+        expiresIn: this.configService.get('jwt.refreshTokenTtl'),
       });
       return {
         token: {
