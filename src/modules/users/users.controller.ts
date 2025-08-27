@@ -8,10 +8,8 @@ import {
   Post,
   Put,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { AccessTokenGuard } from '../auth/guards/access-token.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PatchUserDto } from './dto/patch-user.dto';
 import { UserFilterDto } from './dto/user-filter.dto';
@@ -53,7 +51,6 @@ export class UsersController {
       'application/json': {},
     },
   })
-  @UseGuards(AccessTokenGuard)
   @Get()
   getUsers(@Query() userFilterDto: UserFilterDto) {
     return this.usersService.getUsers(userFilterDto);
