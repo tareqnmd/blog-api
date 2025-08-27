@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from 'src/common/interfaces/jwt-payload.interface';
 import { UsersService } from 'src/modules/users/provider/users.service';
 import jwtConfig from '../config/jwt.config';
 import { SigninDto } from '../dto/signin.dto';
@@ -31,7 +32,7 @@ export class SignInProvider {
       if (!isPasswordValid) {
         throw new UnauthorizedException('Invalid credentials');
       }
-      const payload = {
+      const payload: JwtPayload = {
         sub: user.id,
         email: user.email,
       };
