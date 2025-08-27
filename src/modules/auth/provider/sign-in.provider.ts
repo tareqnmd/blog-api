@@ -1,11 +1,13 @@
 import {
+  Inject,
   Injectable,
   RequestTimeoutException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/modules/users/provider/users.service';
+import jwtConfig from '../config/jwt.config';
 import { SigninDto } from '../dto/signin.dto';
 import { HashingProvider } from './hashing.provider';
 
@@ -15,7 +17,9 @@ export class SignInProvider {
     private readonly usersService: UsersService,
     private readonly hashingProvider: HashingProvider,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
+
+    @Inject(jwtConfig.KEY)
+    private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
   ) {}
   async signIn(signInDto: SigninDto) {
     try {
@@ -32,12 +36,12 @@ export class SignInProvider {
         email: user.email,
       };
       const accessToken = await this.jwtService.signAsync(payload, {
-        expiresIn: this.configService.get('jwt.accessTokenTtl'),
-        secret: this.configService.get('jwt.secret'),
+        expiresIn: this.jwtConfiguration.accessTokenTtl,
+        secret: this.jwtConfiguration.secret,
       });
       const refreshToken = await this.jwtService.signAsync(payload, {
-        expiresIn: this.configService.get('jwt.refreshTokenTtl'),
-        secret: this.configService.get('jwt.secret'),
+        expiresIn: this.jwtConfiguration.refreshTokenTtl,
+        secret: this.jwtConfiguration.secret,
       });
       return {
         token: {
