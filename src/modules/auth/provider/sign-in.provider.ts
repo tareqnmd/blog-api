@@ -1,4 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  RequestTimeoutException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/modules/users/provider/users.service';
 import { SigninDto } from '../dto/signin.dto';
 import { HashingProvider } from './hashing.provider';
@@ -8,6 +14,8 @@ export class SignInProvider {
   constructor(
     private readonly usersService: UsersService,
     private readonly hashingProvider: HashingProvider,
+    private readonly jwtService: JwtService,
+    private readonly jwtConfig: ConfigService,
   ) {}
   async signIn(signInDto: SigninDto) {
     try {
@@ -19,9 +27,31 @@ export class SignInProvider {
       if (!isPasswordValid) {
         throw new UnauthorizedException('Invalid credentials');
       }
-      return user;
-    } catch {
-      throw new UnauthorizedException('Invalid credentials');
+      const payload = {
+        sub: user.id,
+        email: user.email,
+      };
+      const accessToken = await this.jwtService.signAsync(payload, {
+        expiresIn: this.jwtConfig.get('accessTokenTtl'),
+      });
+      const refreshToken = await this.jwtService.signAsync(payload, {
+        expiresIn: this.jwtConfig.get('refreshTokenTtl'),
+      });
+      return {
+        token: {
+          accessToken,
+          refreshToken,
+        },
+        user: {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+        },
+      };
+    } catch (error) {
+      throw new RequestTimeoutException(
+        error instanceof Error ? error.message : 'Failed to sign in',
+      );
     }
   }
 }
