@@ -9,6 +9,7 @@ import envValidation from './config/env.validation';
 import { AuthModule } from './modules/auth/auth.module';
 import jwtConfig from './modules/auth/config/jwt.config';
 import { AccessTokenGuard } from './modules/auth/guards/access-token.guard';
+import { AuthGuard } from './modules/auth/guards/auth.guard';
 import { BlogsModule } from './modules/blogs/blogs.module';
 import { MetaOptionsModule } from './modules/meta-options/meta-options.module';
 import { PaginationModule } from './modules/pagination/pagination.module';
@@ -49,8 +50,9 @@ import { UsersModule } from './modules/users/users.module';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: AccessTokenGuard,
+      useClass: AuthGuard,
     },
+    AccessTokenGuard,
   ],
 })
 export class AppModule {}
