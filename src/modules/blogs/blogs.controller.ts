@@ -11,6 +11,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ITokenUser } from 'src/common/interfaces/token-user.interface';
+import { TokenUser } from '../auth/decorators/token-user.decorator';
 import { BlogFilterDto } from './dto/blog-filter.dto';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { PatchBlogDto } from './dto/patch-blog.dto';
@@ -38,7 +40,11 @@ export class BlogsController {
     },
   })
   @Post()
-  createBlog(@Body() createBlogDto: CreateBlogDto) {
+  createBlog(
+    @Body() createBlogDto: CreateBlogDto,
+    @TokenUser() user: ITokenUser,
+  ) {
+    console.log(user);
     return this.blogsService.createBlog(createBlogDto);
   }
 
