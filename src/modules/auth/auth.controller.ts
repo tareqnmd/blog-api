@@ -2,11 +2,14 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { SigninDto } from './dto/signin.dto';
 import { AuthService } from './provider/auth.service';
+import { Auth } from './decorators/auth.decorator';
+import { AuthTypeEnum } from './auth.enum';
 
 /**
  * AuthController is a controller that provides methods to sign in and sign up.
  */
 @Controller('auth')
+@Auth(AuthTypeEnum.NONE)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
