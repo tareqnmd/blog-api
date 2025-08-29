@@ -15,36 +15,42 @@ export class AuthGuard implements CanActivate {
   private readonly authTypeGuardMap: Record<
     AuthTypeEnum,
     CanActivate | CanActivate[]
-  > = {
-    [AuthTypeEnum.BEARER]: this.accessTokenGuard,
-    [AuthTypeEnum.NONE]: {
-      canActivate: () => true,
-    },
-  };
+  >;
 
   constructor(
     private readonly reflector: Reflector,
     private readonly accessTokenGuard: AccessTokenGuard,
-  ) {}
+  ) {
+    this.authTypeGuardMap = {
+      [AuthTypeEnum.BEARER]: this.accessTokenGuard,
+      [AuthTypeEnum.NONE]: {
+        canActivate: () => true,
+      },
+    };
+  }
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const authTypes =
-      this.reflector.getAllAndOverride(AUTH_TYPE_KEY, [
-        context.getHandler(),
-        context.getClass(),
-      ]) ?? AuthGuard.defaultAuthType;
+    const authTypesFromReflector = this.reflector.getAllAndOverride<
+      AuthTypeEnum[]
+    >(AUTH_TYPE_KEY, [context.getHandler(), context.getClass()]);
 
-    const guards = authTypes.map((type) => this.authTypeGuardMap[type]).flat();
+    const authTypes: AuthTypeEnum[] = authTypesFromReflector ?? [
+      AuthGuard.defaultAuthType,
+    ];
+
+    const guards = authTypes
+      .map((type: AuthTypeEnum) => this.authTypeGuardMap[type])
+      .flat();
 
     const error = new UnauthorizedException();
 
     for (const guard of guards) {
-      const canActivate = await Promise.resolve(
-        guard.canActivate(context),
-      ).catch((err) => {
-        err;
-      });
-      if (canActivate) {
-        return true;
+      try {
+        const canActivate = await Promise.resolve(guard.canActivate(context));
+        if (canActivate) {
+          return true;
+        }
+      } catch {
+        continue;
       }
     }
     throw error;
