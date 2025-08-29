@@ -10,6 +10,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { AuthTypeEnum } from '../auth/auth.enum';
+import { Auth } from '../auth/decorators/auth.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PatchUserDto } from './dto/patch-user.dto';
 import { UserFilterDto } from './dto/user-filter.dto';
@@ -35,6 +37,7 @@ export class UsersController {
     },
   })
   @Post()
+  @Auth(AuthTypeEnum.NONE)
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }
