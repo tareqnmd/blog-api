@@ -30,9 +30,9 @@ export class User extends DefaultEntity {
   @Column({
     type: 'varchar',
     length: 96,
-    nullable: false,
+    nullable: true,
   })
-  password: string;
+  password?: string;
 
   @Column({
     type: 'enum',
@@ -43,4 +43,10 @@ export class User extends DefaultEntity {
 
   @OneToMany(() => Blog, (blog) => blog.author)
   blogs: Blog[];
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  googleId?: string;
 }
