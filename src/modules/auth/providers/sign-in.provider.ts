@@ -20,7 +20,7 @@ export class SignInProvider {
       const user = await this.usersService.findUserByEmail(signInDto.email);
       const isPasswordValid = await this.hashingProvider.comparePassword(
         signInDto.password,
-        user.password,
+        user.password ?? '',
       );
       if (!isPasswordValid) {
         throw new UnauthorizedException('Invalid credentials');

@@ -6,12 +6,12 @@ import { AuthController } from './auth.controller';
 import jwtConfig from './config/jwt.config';
 import { AuthService } from './providers/auth.service';
 import { BcryptProvider } from './providers/bcrypt.provider';
+import { GenerateTokensProvider } from './providers/generate-tokens.provider';
 import { HashingProvider } from './providers/hashing.provider';
 import { RefreshTokenProvider } from './providers/refresh-token.provider';
 import { SignInProvider } from './providers/sign-in.provider';
-import { GenerateTokensProvider } from './providers/generate-tokens.provider';
 import { GoogleAuthController } from './social/google-auth.controller';
-import { GoogleAuthService } from './social/google-auth.service';
+import { GoogleAuthService } from './social/providers/google-auth.service';
 
 @Module({
   controllers: [AuthController, GoogleAuthController],

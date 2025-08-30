@@ -7,6 +7,7 @@ import { UserFilterDto } from '../dto/user-filter.dto';
 import { User } from '../user.entity';
 import { CreateUserProvider } from './create-user.provider';
 import { FindUserByEmailProvider } from './find-user-by-email.provider';
+import { FindUserByGoogleIdProvider } from './find-user-by-google-id.provider';
 import { FindUserByIdProvider } from './find-user-by-id.provider';
 
 /**
@@ -24,6 +25,7 @@ export class UsersService {
     private readonly createUserProvider: CreateUserProvider,
     private readonly findUserByEmailProvider: FindUserByEmailProvider,
     private readonly findUserByIdProvider: FindUserByIdProvider,
+    private readonly findUserByGoogleIdProvider: FindUserByGoogleIdProvider,
   ) {}
 
   /**
@@ -66,6 +68,15 @@ export class UsersService {
    */
   async findUserById(id: number) {
     return this.findUserByIdProvider.findUserById(id);
+  }
+
+  /**
+   * Finds a user by id.
+   * @param id - The id of the user to find.
+   * @returns A string with the user's name and email.
+   */
+  async findUserByGoogleId(googleId: string) {
+    return this.findUserByGoogleIdProvider.findUserByGoogleId(googleId);
   }
 
   /**
