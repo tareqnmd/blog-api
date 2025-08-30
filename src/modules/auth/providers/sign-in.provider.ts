@@ -3,7 +3,7 @@ import {
   RequestTimeoutException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UsersService } from 'src/modules/users/provider/users.service';
+import { UsersService } from 'src/modules/users/providers/users.service';
 import { SigninDto } from '../dto/signin.dto';
 import { GenerateTokensProvider } from './generate-tokens.provider';
 import { HashingProvider } from './hashing.provider';

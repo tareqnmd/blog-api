@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { generateSlugText } from 'src/common';
 import { ITokenUser } from 'src/common/interfaces/token-user.interface';
 import { TagsService } from 'src/modules/tags/tags.service';
-import { UsersService } from 'src/modules/users/provider/users.service';
+import { UsersService } from 'src/modules/users/providers/users.service';
 import { Repository } from 'typeorm';
 import { Blog } from '../blog.entity';
 import { CreateBlogDto } from '../dto/create-blog.dto';

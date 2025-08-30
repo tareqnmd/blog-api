@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ITokenUser } from 'src/common/interfaces/token-user.interface';
-import { UsersService } from 'src/modules/users/provider/users.service';
+import { UsersService } from 'src/modules/users/providers/users.service';
 import jwtConfig from '../config/jwt.config';
 import { RefreshTokenDto } from '../dto/refresh-token.dto';
 import { GenerateTokensProvider } from './generate-tokens.provider';

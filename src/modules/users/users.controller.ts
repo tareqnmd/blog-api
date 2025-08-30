@@ -15,7 +15,7 @@ import { Auth } from '../auth/decorators/auth.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PatchUserDto } from './dto/patch-user.dto';
 import { UserFilterDto } from './dto/user-filter.dto';
-import { UsersService } from './provider/users.service';
+import { UsersService } from './providers/users.service';
 
 /**
  * UsersController is a controller that provides methods to create, get, update, and delete users.

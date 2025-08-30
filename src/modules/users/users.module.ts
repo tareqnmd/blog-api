@@ -1,10 +1,10 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
-import { CreateUserProvider } from './provider/create-user.provider';
-import { FindUserByEmailProvider } from './provider/find-user-by-email.provider';
-import { FindUserByIdProvider } from './provider/find-user-by-id.provider';
-import { UsersService } from './provider/users.service';
+import { CreateUserProvider } from './providers/create-user.provider';
+import { FindUserByEmailProvider } from './providers/find-user-by-email.provider';
+import { FindUserByIdProvider } from './providers/find-user-by-id.provider';
+import { UsersService } from './providers/users.service';
 import { User } from './user.entity';
 import { UsersController } from './users.controller';
 
