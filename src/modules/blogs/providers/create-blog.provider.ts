@@ -10,8 +10,8 @@ import { CreateBlogDto } from '../dto/create-blog.dto';
 @Injectable()
 export class CreateBlogProvider {
   constructor(
-    private readonly tagsService: TagsService,
     private readonly usersService: UsersService,
+    private readonly tagsService: TagsService,
     private readonly blogRepository: Repository<Blog>,
   ) {}
 

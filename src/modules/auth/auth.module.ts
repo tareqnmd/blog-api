@@ -4,10 +4,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
 import jwtConfig from './config/jwt.config';
-import { AuthService } from './provider/auth.service';
-import { BcryptProvider } from './provider/bcrypt.provider';
-import { HashingProvider } from './provider/hashing.provider';
-import { SignInProvider } from './provider/sign-in.provider';
+import { AuthService } from './providers/auth.service';
+import { BcryptProvider } from './providers/bcrypt.provider';
+import { HashingProvider } from './providers/hashing.provider';
+import { RefreshTokenProvider } from './providers/refresh-token.provider';
+import { SignInProvider } from './providers/sign-in.provider';
+import { GenerateTokensProvider } from './providers/generate-tokens.provider';
 
 @Module({
   controllers: [AuthController],
@@ -18,6 +20,8 @@ import { SignInProvider } from './provider/sign-in.provider';
       useClass: BcryptProvider,
     },
     SignInProvider,
+    RefreshTokenProvider,
+    GenerateTokensProvider,
   ],
   exports: [AuthService, HashingProvider],
   imports: [

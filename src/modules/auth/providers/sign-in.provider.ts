@@ -1,14 +1,11 @@
 import {
-  Inject,
   Injectable,
   RequestTimeoutException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/modules/users/provider/users.service';
-import jwtConfig from '../config/jwt.config';
 import { SigninDto } from '../dto/signin.dto';
+import { GenerateTokensProvider } from './generate-tokens.provider';
 import { HashingProvider } from './hashing.provider';
 
 @Injectable()
@@ -16,10 +13,7 @@ export class SignInProvider {
   constructor(
     private readonly usersService: UsersService,
     private readonly hashingProvider: HashingProvider,
-    private readonly jwtService: JwtService,
-
-    @Inject(jwtConfig.KEY)
-    private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
+    private readonly generateTokensProvider: GenerateTokensProvider,
   ) {}
   async signIn(signInDto: SigninDto) {
     try {
@@ -31,18 +25,11 @@ export class SignInProvider {
       if (!isPasswordValid) {
         throw new UnauthorizedException('Invalid credentials');
       }
-      const payload = {
-        sub: user.id,
-        email: user.email,
-      };
-      const accessToken = await this.jwtService.signAsync(payload, {
-        expiresIn: this.jwtConfiguration.accessTokenTtl,
-        secret: this.jwtConfiguration.secret,
-      });
-      const refreshToken = await this.jwtService.signAsync(payload, {
-        expiresIn: this.jwtConfiguration.refreshTokenTtl,
-        secret: this.jwtConfiguration.secret,
-      });
+      const { accessToken, refreshToken } =
+        await this.generateTokensProvider.generateTokens({
+          sub: user.id,
+          email: user.email,
+        });
       return {
         token: {
           accessToken,

@@ -4,3 +4,8 @@ export interface ITokenUser {
   exp: number;
   iat: number;
 }
+
+export interface ITokenNPayload {
+  sub: number;
+  email: string;
+}

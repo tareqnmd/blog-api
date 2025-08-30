@@ -1,9 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { SigninDto } from './dto/signin.dto';
-import { AuthService } from './provider/auth.service';
-import { Auth } from './decorators/auth.decorator';
 import { AuthTypeEnum } from './auth.enum';
+import { Auth } from './decorators/auth.decorator';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { SigninDto } from './dto/signin.dto';
+import { AuthService } from './providers/auth.service';
 
 /**
  * AuthController is a controller that provides methods to sign in and sign up.
@@ -28,5 +29,22 @@ export class AuthController {
   @Post('signin')
   signin(@Body() signinDto: SigninDto) {
     return this.authService.signin(signinDto);
+  }
+
+  /**
+   * Refreshes a token.
+   * @param refreshTokenDto - The user to sign in.
+   * @returns A string with the user's name and email.
+   */
+  @ApiOperation({ summary: 'Refresh token' })
+  @ApiResponse({
+    status: 200,
+    content: {
+      'application/json': {},
+    },
+  })
+  @Post('refresh-token')
+  refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
+    return this.authService.refreshToken(refreshTokenDto);
   }
 }
