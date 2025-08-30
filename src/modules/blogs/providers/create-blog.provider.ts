@@ -1,4 +1,5 @@
 import { Injectable, RequestTimeoutException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { generateSlugText } from 'src/common';
 import { ITokenUser } from 'src/common/interfaces/token-user.interface';
 import { TagsService } from 'src/modules/tags/tags.service';
@@ -12,13 +13,14 @@ export class CreateBlogProvider {
   constructor(
     private readonly usersService: UsersService,
     private readonly tagsService: TagsService,
+    @InjectRepository(Blog)
     private readonly blogRepository: Repository<Blog>,
   ) {}
 
   async createBlog(createBlogDto: CreateBlogDto, user: ITokenUser) {
     try {
-      const tags = await this.tagsService.getTagsByIds(createBlogDto.tags);
       const author = await this.usersService.getUser(user.sub);
+      const tags = await this.tagsService.getTagsByIds(createBlogDto.tags);
 
       const newBlog = this.blogRepository.create({
         ...createBlogDto,
