@@ -1,17 +1,24 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  OnModuleInit,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 import { OAuth2Client } from 'google-auth-library';
+import { UsersService } from 'src/modules/users/providers/users.service';
 import jwtConfig from '../../config/jwt.config';
+import { GenerateTokensProvider } from '../../providers/generate-tokens.provider';
 
 @Injectable()
 export class GoogleAuthService implements OnModuleInit {
   private oauthClient: OAuth2Client;
 
   constructor(
-    private readonly jwtService: JwtService,
+    private readonly usersService: UsersService,
     @Inject(jwtConfig.KEY)
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
+    private readonly generateTokensProvider: GenerateTokensProvider,
   ) {}
 
   onModuleInit() {
@@ -26,5 +33,21 @@ export class GoogleAuthService implements OnModuleInit {
     });
     const payload = ticket.getPayload();
     return payload;
+  }
+
+  async googleAuth(googleToken: string) {
+    const payload = await this.verifyGoogleToken(googleToken);
+    if (payload) {
+      const user = await this.usersService.findUserByGoogleId(payload.sub);
+      if (user) {
+        const tokens = await this.generateTokensProvider.generateTokens({
+          sub: user.id,
+          email: user.email,
+        });
+        return tokens;
+      }
+    } else {
+      throw new UnauthorizedException('Invalid Google token');
+    }
   }
 }
