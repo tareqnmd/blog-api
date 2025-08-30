@@ -1,10 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { generateSlugText } from 'src/common/helper';
+import { ITokenUser } from 'src/common/interfaces/token-user.interface';
 import { Repository } from 'typeorm';
 import { PaginationProvider } from '../../pagination/pagination.provider';
 import { TagsService } from '../../tags/tags.service';
-import { UsersService } from '../../users/provider/users.service';
 import { Blog } from '../blog.entity';
 import { BlogFilterDto } from '../dto/blog-filter.dto';
 import { CreateBlogDto } from '../dto/create-blog.dto';
@@ -12,6 +11,7 @@ import { PatchBlogDto } from '../dto/patch-blog.dto';
 import { PutBlogDto } from '../dto/put-blog.dto';
 import { UpdateBulkBlogStatusDto } from '../dto/updateBulkBlogStatus';
 import { BlogUpdateMany } from './blog-update-many.provider';
+import { CreateBlogProvider } from './create-blog.provider';
 
 /**
  * BlogsService is a service that provides methods to create, get, update, and delete blogs.
@@ -25,7 +25,7 @@ export class BlogsService {
   constructor(
     @InjectRepository(Blog)
     private readonly blogRepository: Repository<Blog>,
-    private readonly usersService: UsersService,
+    private readonly createBlogProvider: CreateBlogProvider,
     private readonly tagsService: TagsService,
     private readonly blogUpdateMany: BlogUpdateMany,
     private readonly paginationProvider: PaginationProvider,
@@ -36,17 +36,8 @@ export class BlogsService {
    * @param createBlogDto - The blog to create.
    * @returns A string with the blog's title.
    */
-  async createBlog(createBlogDto: CreateBlogDto) {
-    const author = await this.usersService.getUser(1);
-    const tags = await this.tagsService.getTagsByIds(createBlogDto.tags);
-    const newBlog = this.blogRepository.create({
-      ...createBlogDto,
-      slug: generateSlugText(createBlogDto.title),
-      author,
-      tags,
-    });
-    const savedBlog = await this.blogRepository.save(newBlog);
-    return savedBlog;
+  async createBlog(createBlogDto: CreateBlogDto, user: ITokenUser) {
+    return this.createBlogProvider.createBlog(createBlogDto, user);
   }
 
   /**

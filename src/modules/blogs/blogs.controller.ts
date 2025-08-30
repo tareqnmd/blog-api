@@ -18,7 +18,7 @@ import { CreateBlogDto } from './dto/create-blog.dto';
 import { PatchBlogDto } from './dto/patch-blog.dto';
 import { PutBlogDto } from './dto/put-blog.dto';
 import { UpdateBulkBlogStatusDto } from './dto/updateBulkBlogStatus';
-import { BlogsService } from './provider/blogs.service';
+import { BlogsService } from './providers/blogs.service';
 
 /**
  * BlogsController is a controller that provides methods to create, get, update, and delete blogs.
@@ -44,8 +44,7 @@ export class BlogsController {
     @Body() createBlogDto: CreateBlogDto,
     @TokenUser() user: ITokenUser,
   ) {
-    console.log(user);
-    return this.blogsService.createBlog(createBlogDto);
+    return this.blogsService.createBlog(createBlogDto, user);
   }
 
   /**

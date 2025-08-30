@@ -5,11 +5,12 @@ import { TagsModule } from '../tags/tags.module';
 import { UsersModule } from '../users/users.module';
 import { Blog } from './blog.entity';
 import { BlogsController } from './blogs.controller';
-import { BlogUpdateMany } from './provider/blog-update-many.provider';
-import { BlogsService } from './provider/blogs.service';
+import { BlogUpdateMany } from './providers/blog-update-many.provider';
+import { BlogsService } from './providers/blogs.service';
+import { CreateBlogProvider } from './providers/create-blog.provider';
 
 @Module({
-  providers: [BlogsService, BlogUpdateMany],
+  providers: [BlogsService, BlogUpdateMany, CreateBlogProvider],
   controllers: [BlogsController],
   imports: [
     TypeOrmModule.forFeature([Blog]),
