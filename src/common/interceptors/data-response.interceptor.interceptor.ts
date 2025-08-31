@@ -4,14 +4,13 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { IMeta } from '../../modules/pagination/pagination.interface';
+import { Response } from 'express';
+import { map, Observable } from 'rxjs';
+import { IMeta } from 'src/modules/pagination/pagination.interface';
 import { ApiResponse } from '../interfaces/api-response.interface';
 
 @Injectable()
-export class ResponseInterceptor<T>
+export class DataResponseInterceptor<T>
   implements NestInterceptor<T, ApiResponse<T>>
 {
   intercept(
@@ -19,7 +18,6 @@ export class ResponseInterceptor<T>
     next: CallHandler,
   ): Observable<ApiResponse<T>> {
     const response = context.switchToHttp().getResponse<Response>();
-
     return next.handle().pipe(
       map((data: T) => {
         if (
@@ -30,10 +28,9 @@ export class ResponseInterceptor<T>
           'data' in data &&
           'error' in data
         ) {
-          // If response already has the full structure, extract data from data field
           const apiResponse = data as ApiResponse<T>;
           const result: ApiResponse<T> = {
-            data: apiResponse.data,
+            data: apiResponse.data ?? null,
             message: apiResponse.message,
             status: apiResponse.status,
             error: apiResponse.error,
@@ -46,20 +43,16 @@ export class ResponseInterceptor<T>
           return result;
         }
 
-        // Check if data has meta information (pagination response)
         let responseData: T | null;
         let meta: IMeta | undefined = undefined;
 
         if (data && typeof data === 'object') {
           if ('data' in data && 'meta' in data) {
-            // This is a pagination response with both data and meta
             responseData = (data as { data: T; meta: any }).data;
             meta = (data as { data: T; meta: IMeta }).meta;
           } else if ('data' in data) {
-            // This has a data property but no meta
             responseData = (data as { data: T }).data;
           } else {
-            // Regular response without nested data
             responseData = data ?? null;
           }
         } else {
@@ -68,7 +61,7 @@ export class ResponseInterceptor<T>
 
         const result: ApiResponse<T> = {
           data: responseData,
-          message: this.getSuccessMessage(context, data),
+          message: 'Request completed successfully',
           status: response.statusCode,
           error: false,
         };
@@ -80,28 +73,5 @@ export class ResponseInterceptor<T>
         return result;
       }),
     );
-  }
-
-  private getSuccessMessage<T>(context: ExecutionContext, data: T): string {
-    const request = context.switchToHttp().getRequest<Request>();
-    const method = request.method;
-
-    if (data && typeof data === 'object' && 'message' in data) {
-      return (data as { message: string }).message;
-    }
-
-    switch (method) {
-      case 'POST':
-        return 'Resource created successfully';
-      case 'PUT':
-        return 'Resource updated successfully';
-      case 'PATCH':
-        return 'Resource updated successfully';
-      case 'DELETE':
-        return 'Resource deleted successfully';
-      case 'GET':
-      default:
-        return 'Request completed successfully';
-    }
   }
 }

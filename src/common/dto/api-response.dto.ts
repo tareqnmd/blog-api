@@ -6,20 +6,13 @@ export class ApiResponseDto<T = any> {
   data: T | null;
 
   @ApiProperty({ description: 'Dynamic response message' })
-  message: string;
+  message: string | string[] | null;
 
   @ApiProperty({ description: 'HTTP status code' })
   status: number;
 
   @ApiProperty({ description: 'Indicates if this is an error response' })
   error: boolean;
-
-  @ApiProperty({
-    description: 'Array of error messages (only present when error is true)',
-    required: false,
-    type: [String],
-  })
-  errorMessages?: string[];
 
   @ApiProperty({
     description: 'Meta information (pagination, etc.)',

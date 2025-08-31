@@ -6,10 +6,7 @@ export * from '../modules/pagination/pagination.dto';
 export * from './dto/api-response.dto';
 
 // Interceptors
-export * from './interceptors/response.interceptor';
-
-// Filters
-export * from './filters/global-exception.filter';
+export * from './interceptors/data-response.interceptor.interceptor';
 
 // Utils
 export * from './utils/response.util';

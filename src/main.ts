@@ -2,8 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
-import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { DataResponseInterceptor } from './common';
 
 /**
  * Bootstrap the application.
@@ -24,10 +23,7 @@ async function bootstrap() {
   );
 
   // global response interceptor
-  app.useGlobalInterceptors(new ResponseInterceptor());
-
-  // global exception filter
-  app.useGlobalFilters(new GlobalExceptionFilter());
+  app.useGlobalInterceptors(new DataResponseInterceptor());
 
   // swagger config
   const swaggerConfig = new DocumentBuilder()
@@ -42,6 +38,7 @@ async function bootstrap() {
       defaultModelsExpandDepth: -1,
     },
   });
+
   const port = process.env.PORT ?? 3000;
   app.enableCors();
   await app.listen(port);
