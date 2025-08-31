@@ -38,6 +38,7 @@ export class User extends DefaultEntity {
     type: 'enum',
     enum: UserRoles,
     nullable: false,
+    default: UserRoles.VIEWER,
   })
   role: UserRoles;
 
