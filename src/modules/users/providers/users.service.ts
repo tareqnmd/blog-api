@@ -4,7 +4,9 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { PatchUserDto } from '../dto/patch-user.dto';
 import { UserFilterDto } from '../dto/user-filter.dto';
+import { GoogleUser } from '../interfaces/google-user.interface';
 import { User } from '../user.entity';
+import { CreateGoogleUserProvider } from './create-google-user.provider';
 import { CreateUserProvider } from './create-user.provider';
 import { FindUserByEmailProvider } from './find-user-by-email.provider';
 import { FindUserByGoogleIdProvider } from './find-user-by-google-id.provider';
@@ -26,6 +28,7 @@ export class UsersService {
     private readonly findUserByEmailProvider: FindUserByEmailProvider,
     private readonly findUserByIdProvider: FindUserByIdProvider,
     private readonly findUserByGoogleIdProvider: FindUserByGoogleIdProvider,
+    private readonly createGoogleUserProvider: CreateGoogleUserProvider,
   ) {}
 
   /**
@@ -35,6 +38,15 @@ export class UsersService {
    */
   async createUser(createUserDto: CreateUserDto) {
     return this.createUserProvider.createUser(createUserDto);
+  }
+
+  /**
+   * Creates a new google user.
+   * @param googleUser - The google user to create.
+   * @returns A string with the user's name and email.
+   */
+  async createGoogleUser(googleUser: GoogleUser) {
+    return this.createGoogleUserProvider.createGoogleUser(googleUser);
   }
 
   /**

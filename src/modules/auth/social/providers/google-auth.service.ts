@@ -38,13 +38,23 @@ export class GoogleAuthService implements OnModuleInit {
   async googleAuth(googleToken: string) {
     const payload = await this.verifyGoogleToken(googleToken);
     if (payload) {
-      console.log(payload);
       const user = await this.usersService.findUserByGoogleId(payload.sub);
-      console.log(user);
       if (user) {
         const tokens = await this.generateTokensProvider.generateTokens({
           sub: user.id,
           email: user.email,
+        });
+        return tokens;
+      } else {
+        const newUser = await this.usersService.createGoogleUser({
+          googleId: payload.sub,
+          email: payload.email ?? '',
+          firstName: payload.given_name ?? '',
+          lastName: payload.family_name ?? '',
+        });
+        const tokens = await this.generateTokensProvider.generateTokens({
+          sub: newUser.id,
+          email: newUser.email,
         });
         return tokens;
       }
