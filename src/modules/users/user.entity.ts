@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { DefaultEntity } from 'src/common/entities/base.entity';
 import { Column, Entity, OneToMany, Unique } from 'typeorm';
 import { Blog } from '../blogs/blog.entity';
@@ -32,6 +33,7 @@ export class User extends DefaultEntity {
     length: 96,
     nullable: true,
   })
+  @Exclude()
   password?: string;
 
   @Column({

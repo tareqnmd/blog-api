@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -8,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthTypeEnum } from '../auth/auth.enum';
@@ -38,6 +40,7 @@ export class UsersController {
   })
   @Post()
   @Auth(AuthTypeEnum.NONE)
+  @UseInterceptors(ClassSerializerInterceptor)
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createUser(createUserDto);
   }
