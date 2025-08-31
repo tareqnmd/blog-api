@@ -2,7 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { DataResponseInterceptor } from './common';
+import { DataResponseExceptionFilter, DataResponseInterceptor } from './common';
 
 /**
  * Bootstrap the application.
@@ -24,6 +24,9 @@ async function bootstrap() {
 
   // global response interceptor
   app.useGlobalInterceptors(new DataResponseInterceptor());
+
+  // global exception filter
+  app.useGlobalFilters(new DataResponseExceptionFilter());
 
   // swagger config
   const swaggerConfig = new DocumentBuilder()
