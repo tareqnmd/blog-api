@@ -51,5 +51,6 @@ export class User extends DefaultEntity {
     type: 'varchar',
     nullable: true,
   })
+  @Exclude()
   googleId?: string;
 }
