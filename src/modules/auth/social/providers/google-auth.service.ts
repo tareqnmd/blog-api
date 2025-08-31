@@ -44,7 +44,15 @@ export class GoogleAuthService implements OnModuleInit {
           sub: user.id,
           email: user.email,
         });
-        return tokens;
+        return {
+          token: tokens,
+          user: {
+            id: user.id,
+            name: `${user.firstName} ${user.lastName}`,
+            email: user.email,
+            role: user.role,
+          },
+        };
       } else {
         const newUser = await this.usersService.createGoogleUser({
           googleId: payload.sub,
@@ -56,7 +64,15 @@ export class GoogleAuthService implements OnModuleInit {
           sub: newUser.id,
           email: newUser.email,
         });
-        return tokens;
+        return {
+          token: tokens,
+          user: {
+            id: newUser.id,
+            name: `${newUser.firstName} ${newUser.lastName}`,
+            email: newUser.email,
+            role: newUser.role,
+          },
+        };
       }
     } else {
       throw new UnauthorizedException('Invalid Google token');
