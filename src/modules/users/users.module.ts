@@ -1,6 +1,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
+import { CreateGoogleUserProvider } from './providers/create-google-user.provider';
 import { CreateUserProvider } from './providers/create-user.provider';
 import { FindUserByEmailProvider } from './providers/find-user-by-email.provider';
 import { FindUserByGoogleIdProvider } from './providers/find-user-by-google-id.provider';
@@ -17,6 +18,7 @@ import { UsersController } from './users.controller';
     FindUserByEmailProvider,
     FindUserByIdProvider,
     FindUserByGoogleIdProvider,
+    CreateGoogleUserProvider,
   ],
   exports: [UsersService],
   imports: [TypeOrmModule.forFeature([User]), forwardRef(() => AuthModule)],
