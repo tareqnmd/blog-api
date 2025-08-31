@@ -38,7 +38,9 @@ export class GoogleAuthService implements OnModuleInit {
   async googleAuth(googleToken: string) {
     const payload = await this.verifyGoogleToken(googleToken);
     if (payload) {
+      console.log(payload);
       const user = await this.usersService.findUserByGoogleId(payload.sub);
+      console.log(user);
       if (user) {
         const tokens = await this.generateTokensProvider.generateTokens({
           sub: user.id,

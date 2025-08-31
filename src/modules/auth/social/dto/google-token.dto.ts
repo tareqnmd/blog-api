@@ -5,5 +5,5 @@ export class GoogleTokenDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  googleToken: string;
+  token: string;
 }
