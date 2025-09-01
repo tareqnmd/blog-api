@@ -1,6 +1,8 @@
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { config } from 'aws-sdk';
 import { AppModule } from './app.module';
 import { DataResponseExceptionFilter, DataResponseInterceptor } from './common';
 
@@ -40,6 +42,16 @@ async function bootstrap() {
     swaggerOptions: {
       defaultModelsExpandDepth: -1,
     },
+  });
+
+  // aws s3 config
+  const configService = app.get(ConfigService);
+  config.update({
+    credentials: {
+      accessKeyId: configService.get('awsConfig.awsAccessKeyId') ?? '',
+      secretAccessKey: configService.get('awsConfig.awsSecretAccessKey') ?? '',
+    },
+    region: configService.get('awsConfig.awsRegion'),
   });
 
   const port = process.env.PORT ?? 3000;
