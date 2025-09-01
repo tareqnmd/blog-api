@@ -59,7 +59,11 @@ export class UploadsService {
     try {
       const upload = await this.uploadRepository.findOne({ where: { id } });
       if (upload) {
-        await this.deleteFileProvider.deleteFile(upload.path);
+        const path = upload.path.replace(
+          `https://${this.configService.get('appConfig.awsCloudfrontUrl')}/`,
+          '',
+        );
+        await this.deleteFileProvider.deleteFile(path);
         await this.uploadRepository.delete(id);
         return {
           message: 'File deleted successfully',
