@@ -35,6 +35,11 @@ export class UploadsService {
       ) {
         throw new BadRequestException('Invalid file type');
       }
+
+      if (file.size > 1 * 1024 * 1024) {
+        throw new BadRequestException('File size is too large');
+      }
+
       const path = await this.uploadToAwsProvider.uploadFile(file);
 
       const upload: UploadFile = {
