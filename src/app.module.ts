@@ -14,6 +14,7 @@ import { BlogsModule } from './modules/blogs/blogs.module';
 import { MetaOptionsModule } from './modules/meta-options/meta-options.module';
 import { PaginationModule } from './modules/pagination/pagination.module';
 import { TagsModule } from './modules/tags/tags.module';
+import { UploadsModule } from './modules/uploads/uploads.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
@@ -46,6 +47,7 @@ import { UsersModule } from './modules/users/users.module';
     PaginationModule,
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
+    UploadsModule,
   ],
   providers: [
     {
