@@ -24,7 +24,15 @@ export class UploadsService {
 
   async uploadFile(file: Express.Multer.File) {
     try {
-      if (!['image/png', 'image/jpeg', 'image/jpg'].includes(file.mimetype)) {
+      if (
+        ![
+          'image/png',
+          'image/jpeg',
+          'image/jpg',
+          'image/gif',
+          'image/webp',
+        ].includes(file.mimetype)
+      ) {
         throw new BadRequestException('Invalid file type');
       }
       const path = await this.uploadToAwsProvider.uploadFile(file);
