@@ -21,7 +21,7 @@ export class UploadsController {
       description: 'multipart/form-data',
     },
   ])
-  @UseInterceptors(FileInterceptor)
+  @UseInterceptors(FileInterceptor('file'))
   @Post('upload-file')
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     return await this.uploadsService.uploadFile(file);
