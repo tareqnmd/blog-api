@@ -48,10 +48,10 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   config.update({
     credentials: {
-      accessKeyId: configService.get('awsConfig.awsAccessKeyId') ?? '',
-      secretAccessKey: configService.get('awsConfig.awsSecretAccessKey') ?? '',
+      accessKeyId: configService.get('appConfig.awsAccessKeyId') ?? '',
+      secretAccessKey: configService.get('appConfig.awsSecretAccessKey') ?? '',
     },
-    region: configService.get('awsConfig.awsRegion'),
+    region: configService.get('appConfig.awsRegion'),
   });
 
   const port = process.env.PORT ?? 3000;
