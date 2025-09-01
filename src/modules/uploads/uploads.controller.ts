@@ -20,7 +20,7 @@ export class UploadsController {
   ])
   @UseInterceptors(FileInterceptor)
   @Post('file')
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return this.uploadsService.uploadFile(file);
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return await this.uploadsService.uploadFile(file);
   }
 }
