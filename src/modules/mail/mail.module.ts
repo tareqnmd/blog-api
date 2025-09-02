@@ -9,10 +9,10 @@ import { MailService } from './providers/mail.service';
 @Module({
   imports: [
     MailerModule.forRootAsync({
+      inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        inject: [ConfigService],
         transport: {
-          host: configService.get<string>('appConfig.mailHost') ?? '',
+          host: configService.get<string>('appConfig.mailHost'),
           port: configService.get<number>('appConfig.mailPort'),
           secure: false,
           auth: {
