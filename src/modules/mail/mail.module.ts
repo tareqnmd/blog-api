@@ -9,14 +9,15 @@ import { MailService } from './providers/mail.service';
 @Module({
   imports: [
     MailerModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
+        inject: [ConfigService],
         transport: {
-          host: configService.get('appConfig.mailHost') ?? '',
-          port: configService.get('appConfig.mailPort'),
+          host: configService.get<string>('appConfig.mailHost') ?? '',
+          port: configService.get<number>('appConfig.mailPort'),
           secure: false,
           auth: {
-            user: configService.get('appConfig.smtpUsername'),
-            pass: configService.get('appConfig.smtpPassword'),
+            user: configService.get<string>('appConfig.smtpUsername'),
+            pass: configService.get<string>('appConfig.smtpPassword'),
           },
         },
         defaults: {
@@ -30,7 +31,6 @@ import { MailService } from './providers/mail.service';
           },
         },
       }),
-      inject: [ConfigService],
     }),
   ],
   providers: [MailService],
