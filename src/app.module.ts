@@ -16,6 +16,7 @@ import { PaginationModule } from './modules/pagination/pagination.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
 import { UsersModule } from './modules/users/users.module';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { UsersModule } from './modules/users/users.module';
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
     UploadsModule,
+    MailModule,
   ],
   providers: [
     {
