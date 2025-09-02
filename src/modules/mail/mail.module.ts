@@ -29,7 +29,7 @@ import { MailService } from './providers/mail.service';
             inlineCssEnabled: true,
           }),
           options: {
-            strict: true,
+            strict: false,
           },
         },
       }),
