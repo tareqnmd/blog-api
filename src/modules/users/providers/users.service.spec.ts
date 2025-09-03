@@ -80,5 +80,31 @@ describe('UsersService', () => {
         }),
       ).toBeDefined();
     });
+    it('should create a new user', async () => {
+      const createUserDto: CreateUserDto = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        password: 'password',
+      };
+      const user = await service.createUser(createUserDto);
+      expect(user).toBeDefined();
+      expect(user.id).toBeDefined();
+      expect(user.firstName).toBeDefined();
+      expect(user.lastName).toBeDefined();
+      expect(user.email).toBeDefined();
+      expect(user.role).toBeDefined();
+      expect(user.password).toBeDefined();
+      expect(user.createdAt).toBeDefined();
+      expect(user.updatedAt).toBeDefined();
+
+      expect(user.firstName).toBe(createUserDto.firstName);
+      expect(user.lastName).toBe(createUserDto.lastName);
+      expect(user.email).toBe(createUserDto.email);
+      expect(user.role).toBe(UserRoles.VIEWER);
+      expect(user.password).toBeDefined();
+      expect(user.createdAt).toBeDefined();
+      expect(user.updatedAt).toBeDefined();
+    });
   });
 });
