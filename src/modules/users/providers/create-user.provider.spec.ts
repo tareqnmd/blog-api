@@ -24,6 +24,7 @@ describe('CreateUserProvider', () => {
   let provider: CreateUserProvider;
   let userRepository: MockRepository;
   const user = {
+    id: 1,
     firstName: 'John',
     lastName: 'Doe',
     email: 'john.doe@example.com',
@@ -40,7 +41,7 @@ describe('CreateUserProvider', () => {
         },
         {
           provide: getRepositoryToken(User),
-          useValue: {},
+          useValue: createMockRepository(),
         },
         {
           provide: MailService,
@@ -58,10 +59,40 @@ describe('CreateUserProvider', () => {
       ],
     }).compile();
     provider = module.get<CreateUserProvider>(CreateUserProvider);
-    userRepository = module.get<MockRepository<User>>(getRepositoryToken(User));
+    userRepository = module.get<MockRepository>(getRepositoryToken(User));
   });
 
   it('should be defined', () => {
     expect(provider).toBeDefined();
+  });
+
+  describe('createUser', () => {
+    describe('when the user does not exist', () => {
+      it('should create a new user', async () => {
+        userRepository.findOne?.mockResolvedValue(null);
+        userRepository.create?.mockReturnValue(user);
+        userRepository.save?.mockResolvedValue(user);
+        const result = await provider.createUser(user);
+        expect(userRepository.findOne).toHaveBeenCalledWith({
+          where: { email: user.email },
+        });
+        expect(userRepository.create).toHaveBeenCalledWith(user);
+        expect(userRepository.save).toHaveBeenCalledWith(user);
+        expect(result).toEqual(user);
+      });
+    });
+    describe('when the user already exists', () => {
+      it('should throw an error', async () => {
+        userRepository.findOne?.mockReturnValue(user.email);
+        userRepository.create?.mockReturnValue(user);
+        userRepository.save?.mockReturnValue(user);
+        try {
+          const newUser = await provider.createUser(user);
+          expect(newUser).toEqual(user);
+        } catch (error) {
+          expect(error).toBeDefined();
+        }
+      });
+    });
   });
 });
